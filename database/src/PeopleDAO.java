@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -19,6 +20,8 @@ import java.sql.ResultSet;
 //import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.lang.System.*;
 /**
  * Servlet implementation class Connect
  */
@@ -46,27 +49,29 @@ public class PeopleDAO {
                 throw new SQLException(e);
             }
             connect = (Connection) DriverManager
-  			      .getConnection("jdbc:mysql://127.0.0.1:3306/testdb?"
+  			      .getConnection("jdbc:mysql://127.0.0.1:3306/project?"
   			          + "user=john&password=pass1234");
             System.out.println(connect);
         }
     }
     
-    public List<People> listAllPeople() throws SQLException {
-        List<People> listPeople = new ArrayList<People>();        
-        String sql = "SELECT * FROM student";      
+    public List<Users> listAllPeople() throws SQLException {
+        List<Users> listPeople = new ArrayList<Users>();        
+        String sql = "SELECT * FROM login";      
         connect_func();      
         statement =  (Statement) connect.createStatement();
         ResultSet resultSet = statement.executeQuery(sql);
          
         while (resultSet.next()) {
-            int id = resultSet.getInt("id");
-            String name = resultSet.getString("name");
-            String address = resultSet.getString("address");
-            String status = resultSet.getString("status");
+            int id = resultSet.getInt("idLogin");
+            String username = resultSet.getString("username");
+            String password = resultSet.getString("pass");
+            String first_name = resultSet.getString("first_name");
+            String last_name = resultSet.getString("last_name");
+            String age = resultSet.getString("age");
              
-            People people = new People(id,name, address, status);
-            listPeople.add(people);
+            Users user = new Users(id, username, password, first_name, last_name, age);
+            listPeople.add(user);
         }        
         resultSet.close();
         statement.close();         
@@ -80,13 +85,23 @@ public class PeopleDAO {
         }
     }
          
-    public boolean insert(People people) throws SQLException {
-    	connect_func();         
-		String sql = "insert into  student(Name, Address, Status) values (?, ?, ?)";
+    public boolean insert(Users user) throws SQLException {
+    	connect_func();
+    	PrintStream out = System.out;
+		String sql = "insert into login(Username, Pass, First_name, Last_name, Age) values (?, ?, ?, ?, ?)";
 		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-		preparedStatement.setString(1, people.name);
-		preparedStatement.setString(2, people.address);
-		preparedStatement.setString(3, people.status);
+		preparedStatement.setString(1, user.username);
+		preparedStatement.setString(2, user.password);
+		preparedStatement.setString(3, user.first_name);
+		preparedStatement.setString(4, user.last_name);
+		preparedStatement.setString(5, user.age);
+		
+		out.println("Start of User Info");
+		out.println(user.username);
+		out.println(user.password);
+		out.println(user.first_name);
+		out.println(user.last_name);
+		out.println(user.age);
 //		preparedStatement.executeUpdate();
 		
         boolean rowInserted = preparedStatement.executeUpdate() > 0;
@@ -95,12 +110,12 @@ public class PeopleDAO {
         return rowInserted;
     }     
      
-    public boolean delete(int peopleid) throws SQLException {
-        String sql = "DELETE FROM student WHERE id = ?";        
+    public boolean delete(int id) throws SQLException {
+        String sql = "DELETE FROM login WHERE id = ?";        
         connect_func();
          
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-        preparedStatement.setInt(1, peopleid);
+        preparedStatement.setInt(1, id);
          
         boolean rowDeleted = preparedStatement.executeUpdate() > 0;
         preparedStatement.close();
@@ -109,7 +124,7 @@ public class PeopleDAO {
     }
      
     public boolean update(People people) throws SQLException {
-        String sql = "update student set Name=?, Address =?,Status = ? where id = ?";
+        String sql = "update login set Name=?, Address =?,Status = ? where id = ?";
         connect_func();
         
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);

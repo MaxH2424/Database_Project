@@ -67,8 +67,8 @@ public class ControlServlet extends HttpServlet {
     
     private void listPeople(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        List<People> listPeople = peopleDAO.listAllPeople();
-        request.setAttribute("listPeople", listPeople);       
+        List<Users> listUsers = peopleDAO.listAllPeople();
+        request.setAttribute("listUsers", listUsers);       
         RequestDispatcher dispatcher = request.getRequestDispatcher("PeopleList.jsp");       
         dispatcher.forward(request, response);
     }
@@ -95,11 +95,13 @@ public class ControlServlet extends HttpServlet {
     // 
     private void insertPeople(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-        String name = request.getParameter("name");
-        String address = request.getParameter("address");
-        String status = request.getParameter("status");
-        People newPeople = new People(name, address, status);
-        peopleDAO.insert(newPeople);
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        String first_name = request.getParameter("first_name");
+        String last_name = request.getParameter("last_name");
+        String age = request.getParameter("age");
+        Users newUser = new Users(username, password, first_name, last_name, age);
+        peopleDAO.insert(newUser);
         response.sendRedirect("list");  // The sendRedirect() method works at client side and sends a new request
     }
  

@@ -23,30 +23,22 @@
                         Register
                 </h2>
             </caption>
-                <c:if test="${people != null}">
-                    <input type="hidden" name="id" value="<c:out value='${people.id}' />" />
+                <c:if test="${users != null}">
+                    <input type="hidden" name="id" value="<c:out value='${users.id}' />" />
                 </c:if>           
             <tr>
                 <th>Username (Email): </th>
                 <td>
-                    <input type="text" name="name" size="45"
-                            value="<c:out value='${people.name}' />"
+                    <input type="text" name="username" size="45"
+                            value="<c:out value='${users.username}' />"
                         />
                 </td>
             </tr>
             <tr>
                 <th>Password: </th>
                 <td>
-                    <input type="text" name="name" size="45"
-                            value="<c:out value='${people.name}' />"
-                        />
-                </td>
-            </tr>
-            <tr>
-                <th>Retype Password: </th>
-                <td>
-                    <input type="text" name="name" size="45"
-                            value="<c:out value='${people.name}' />"
+                    <input type="text" name="password" size="45"
+                            value="<c:out value='${users.password}' />"
                         />
                 </td>
             </tr>
@@ -55,8 +47,8 @@
             <tr>
                 <th>First Name: </th>
                 <td>
-                    <input type="text" name="name" size="45"
-                            value="<c:out value='${people.name}' />"
+                    <input type="text" name="first_name" size="45"
+                            value="<c:out value='${users.first_name}' />"
                         />
                 </td>
             </tr>
@@ -65,16 +57,16 @@
             <tr>
                 <th>Last Name: </th>
                 <td>
-                    <input type="text" name="address" size="45"
-                            value="<c:out value='${people.address}' />"
+                    <input type="text" name="last_name" size="45"
+                            value="<c:out value='${users.last_name}' />"
                     />
                 </td>
             </tr>
             <tr>
                 <th>Age: </th>
                 <td>
-                    <input type="text" name="status" size="5"
-                            value="<c:out value='${people.status}' />"
+                    <input type="text" name="age" size="5"
+                            value="<c:out value='${users.age}' />"
                     />
                 </td>
             </tr>

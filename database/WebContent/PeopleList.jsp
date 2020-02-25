@@ -40,16 +40,20 @@ if(request.getParameter("listPeople") == null) { // we want to make sure that we
                 <th>Status</th>
                 <th>Actions</th>
             </tr>
-            <c:forEach var="people" items="${listPeople}">
+            <c:forEach var="people" items="${listUsers}">
                 <tr>
-                    <td><c:out value="${people.id}" /></td>
-                    <td><c:out value="${people.name}" /></td>
-                    <td><c:out value="${people.address}" /></td>
-                    <td><c:out value="${people.status}" /></td>
+                    <td><c:out value="${users.id}" /></td>
+                    <td><c:out value="${users.username}" /></td>
+                    <td><c:out value="${users.pass}" /></td>
+                    <td><c:out value="${users.status}" /></td>
+                    <td><c:out value="${users.first_name}" /></td>
+                    <td><c:out value="${users.last_name}" /></td>
+                    <td><c:out value="${users.age}" /></td>
+                    
                     <td>
-                        <a href="edit?id=<c:out value='${people.id}' />">Edit</a>
+                        <a href="edit?id=<c:out value='${users.id}' />">Edit</a>
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <a href="delete?id=<c:out value='${people.id}' />">Delete</a>                     
+                        <a href="delete?id=<c:out value='${users.id}' />">Delete</a>                     
                     </td>
                 </tr>
             </c:forEach>
