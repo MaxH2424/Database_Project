@@ -21,28 +21,36 @@
             <caption>
                 <h2>Edit an Existing People</h2>
             </caption>
-                    <input type="hidden" name="id" value="<c:out value='${people.id}' />" />
+                    <input type="hidden" name="id" value="<c:out value='${users.id}' />" />  
             <tr>
-                <th>Name: </th>
+                <th>Username: </th>
                 <td>
                     <input type="text" name="name" size="45"
-                            value="<c:out value='${people.name}' />"
+                            value="<c:out value='${users.username}' />"
                         />
                 </td>
             </tr>
             <tr>
-                <th>Address: </th>
+                <th>First Name: </th>
                 <td>
                     <input type="text" name="address" size="45"
-                            value="<c:out value='${people.address}' />"
+                            value="<c:out value='${users.first_name}' />"
                     />
                 </td>
             </tr>
             <tr>
-                <th>Status: </th>
+                <th>Last Name: </th>
+                <td>
+                    <input type="text" name="status" size="45"
+                            value="<c:out value='${users.last_name}' />"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <th>Age: </th>
                 <td>
                     <input type="text" name="status" size="5"
-                            value="<c:out value='${people.status}' />"
+                            value="<c:out value='${users.age}' />"
                     />
                 </td>
             </tr>

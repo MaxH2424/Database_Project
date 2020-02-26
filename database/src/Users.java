@@ -7,15 +7,15 @@ public class Users {
 	protected String last_name;
 	protected String age;
 	
-	Users(){
+	public Users(){
 		
 	}
 	
-	Users(int id){
+	public Users(int id){
 		this.id = id;
 	}
 	
-	Users(String username, String password, String first_name, String last_name, String age){
+	public Users(int userID, String username, String first_name, String last_name, String age){
 		this.username = username;
 		this.password = password;
 		this.first_name = first_name;
@@ -23,7 +23,15 @@ public class Users {
 		this.age = age;
 	}
 	
-	Users(int userID, String username, String password, String first_name, String last_name, String age){
+	public Users(String username, String password, String first_name, String last_name, String age){
+		this.username = username;
+		this.password = password;
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.age = age;
+	}
+	
+	public Users(int userID, String username, String password, String first_name, String last_name, String age){
 		this.id = userID;
 		this.username = username;
 		this.password = password;
@@ -33,55 +41,55 @@ public class Users {
 	}
 	
 	// Getters
-	int getID() {
+	public int getID() {
 		return this.id;
 		
 	}
 	
-	String getUser() {
+	public String getUser() {
 		return this.username;
 		
 	}
 	
-	String getPass() {
+	public String getPass() {
 		return this.password;
 	}
 	
-	String getFirst() {
+	public String getFirst() {
 		return this.first_name;
 	}
 	
-	String getLast() {
+	public String getLast() {
 		return this.last_name;
 	}
 	
-	String getAge() {
+	public String getAge() {
 		return this.age;
 	}
 	//
 	
 	// Setters
-	void setID(int id) {
+	public void setID(int id) {
 		this.id = id;
 	}
 	
-	void setUser(String user) {
+	public void setUser(String user) {
 		this.username = user;
 	}
 	
-	void setPass(String pass) {
+	public void setPass(String pass) {
 		this.password = pass;
 	}
 	
-	void setFirst(String first) {
+	public void setFirst(String first) {
 		this.first_name = first;
 	}
 	
-	void setLast(String last) {
+	public void setLast(String last) {
 		this.last_name = last;
 	}
 	
-	void setAge(String age) {
+	public void setAge(String age) {
 		this.age = age;
 	}
 	//

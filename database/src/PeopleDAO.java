@@ -111,7 +111,7 @@ public class PeopleDAO {
     }     
      
     public boolean delete(int id) throws SQLException {
-        String sql = "DELETE FROM login WHERE id = ?";        
+        String sql = "DELETE FROM login WHERE idLogin = ?";        
         connect_func();
          
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
@@ -123,15 +123,17 @@ public class PeopleDAO {
         return rowDeleted;     
     }
      
-    public boolean update(People people) throws SQLException {
-        String sql = "update login set Name=?, Address =?,Status = ? where id = ?";
+    public boolean update(Users user) throws SQLException {
+        String sql = "update login set Username=?, Pass =?,First_name = ?,Last_name = ?,Age = ?, where idLogin = ?";
         connect_func();
         
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-        preparedStatement.setString(1, people.name);
-        preparedStatement.setString(2, people.address);
-        preparedStatement.setString(3, people.status);
-        preparedStatement.setInt(4, people.id);
+        preparedStatement.setString(1, user.username);
+        preparedStatement.setString(2, user.password);
+        preparedStatement.setString(3, user.first_name);
+        preparedStatement.setString(4, user.last_name);
+        preparedStatement.setString(5, user.age);
+        preparedStatement.setInt(6, user.id);
          
         boolean rowUpdated = preparedStatement.executeUpdate() > 0;
         preparedStatement.close();
@@ -139,9 +141,9 @@ public class PeopleDAO {
         return rowUpdated;     
     }
 	
-    public People getPeople(int id) throws SQLException {
-    	People people = null;
-        String sql = "SELECT * FROM student WHERE id = ?";
+    public Users getPeople(int id) throws SQLException {
+    	Users user = null;
+        String sql = "SELECT * FROM login WHERE idLogin = ?";
          
         connect_func();
          
@@ -151,16 +153,18 @@ public class PeopleDAO {
         ResultSet resultSet = preparedStatement.executeQuery();
          
         if (resultSet.next()) {
-            String name = resultSet.getString("name");
-            String address = resultSet.getString("address");
-            String status = resultSet.getString("status");
+            String username = resultSet.getString("username");
+            String password = resultSet.getString("pass");
+            String first_name = resultSet.getString("first_name");
+            String last_name = resultSet.getString("last_name");
+            String age = resultSet.getString("age");
              
-            people = new People(id, name, address, status);
+            user = new Users(id, username, password, first_name, last_name, age);
         }
          
         resultSet.close();
         statement.close();
          
-        return people;
+        return user;
     }
 }

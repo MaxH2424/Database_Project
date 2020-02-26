@@ -3,9 +3,28 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
+        <SCRIPT type="text/JavaScript">
+        function validate(user, pw, repw, fn, ln, age)
+        {	
+        	if (user.value == "" || pw.value == "" || repw.value == "" || fn.value == "" || ln.value == "" || age.value == ""){
+        		alert("Please fill out all required forms");
+        		event.preventDefault();
+        	}
+        	else if (pw.value != repw.value){
+        		alert("Incorrect Passwords");
+        		event.preventDefault();
+        	}
+        	else{
+        		
+        	}
+        } 
+    	</SCRIPT>  
+    	
     <title>People Application</title>
 </head>
 <body>
+
+
     <center>
         <h1>User Register/Login</h1>
         <h2>
@@ -16,7 +35,7 @@
         </h2>
     </center>
     <div align="center">
-            <form action="insert" method="post">
+            <form action="insert" method="post" name="match">
         <table border="1" cellpadding="5">
             <caption>
                 <h2>
@@ -29,20 +48,26 @@
             <tr>
                 <th>Username (Email): </th>
                 <td>
-                    <input type="text" name="username" size="45"
-                            value="<c:out value='${users.username}' />"
+                    <input type="email" name="username" size="45"
+                            value="<c:out value='${users.username}'/>"
                         />
                 </td>
             </tr>
             <tr>
                 <th>Password: </th>
                 <td>
-                    <input type="text" name="password" size="45"
+                    <input type="password" name="password" size="45"
                             value="<c:out value='${users.password}' />"
                         />
                 </td>
             </tr>
             
+             <tr>
+                <th>Retype Password: </th>
+                <td>
+                    <input type="password" name="repassword" size="45"/>
+                </td>
+            </tr>
             
             <tr>
                 <th>First Name: </th>
@@ -70,13 +95,22 @@
                     />
                 </td>
             </tr>
+            
+            <%String username = request.getParameter("username"); %>
+           	<%String password = request.getParameter("password"); %> 
+           	<%String repassword = request.getParameter("repassword"); %>
+           	<%String first_name = request.getParameter("first_name"); %>
+            <%String last_name = request.getParameter("last_name"); %>
+           	<%String age = request.getParameter("age"); %>
             <tr>
                 <td colspan="2" align="center">
-                    <input type="submit" value="Register" />
+                    <button type="submit" name="validate_button" onclick="validate(username, password, repassword, first_name, last_name, age)" value="Register" class="btn">Register</button>
                 </td>
             </tr>
         </table>
         </form>
-    </div>   
+        
+    </div> 
+
 </body>
 </html>

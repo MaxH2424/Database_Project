@@ -68,7 +68,7 @@ public class ControlServlet extends HttpServlet {
     private void listPeople(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         List<Users> listUsers = peopleDAO.listAllPeople();
-        request.setAttribute("listUsers", listUsers);       
+        request.setAttribute("listUsers", listUsers);
         RequestDispatcher dispatcher = request.getRequestDispatcher("PeopleList.jsp");       
         dispatcher.forward(request, response);
     }
@@ -84,7 +84,7 @@ public class ControlServlet extends HttpServlet {
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        People existingPeople = peopleDAO.getPeople(id);
+        Users existingPeople = peopleDAO.getPeople(id);
         RequestDispatcher dispatcher = request.getRequestDispatcher("EditPeopleForm.jsp");
         request.setAttribute("people", existingPeople);
         dispatcher.forward(request, response); // The forward() method works at server side, and It sends the same request and response objects to another servlet.
@@ -110,14 +110,15 @@ public class ControlServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         
         System.out.println(id);
-        String name = request.getParameter("name");
-        String address = request.getParameter("address");
-        String status = request.getParameter("status");
+        String username = request.getParameter("username");
+        String first_name = request.getParameter("first_name");
+        String last_name = request.getParameter("last_name");
+        String age = request.getParameter("age");
         
-        System.out.println(name);
+        System.out.println(username);
         
-        People people = new People(id,name, address, status);
-        peopleDAO.update(people);
+        Users user = new Users(id, username, first_name, last_name, age);
+        peopleDAO.update(user);
         response.sendRedirect("list");
     }
  

@@ -21,7 +21,7 @@
 
 	</tr>
 
-	<c:forEach items="${listPeople}" var="user">
+	<c:forEach items="${listUsers}" var="user">
 
 <tr>
 
