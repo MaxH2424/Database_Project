@@ -7,7 +7,8 @@
         <SCRIPT type="text/JavaScript">
         function validate(user1, pw)
         {	
-			
+			alert(user1.value);
+			alert(pw.value);
         }	
     		
     	</SCRIPT>  
@@ -39,7 +40,7 @@
             <tr>
                 <th>Username (Email): </th>
                 <td>
-                    <input type="email" name="username" size="45"/>"
+                    <input type="text" name="username" size="45"/>"
                         
                 </td>
             </tr>
@@ -58,7 +59,7 @@
            	
             <tr>
                 <td colspan="2" align="center">
-                    <button type="submit" name="validate_button"value="Login" class="btn">Login</button>
+                    <button type="submit" name="validate_button"value="Login" onclick="validate(username, password)" class="btn">Login</button>
                 </td>
             </tr>
         </table>

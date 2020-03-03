@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -75,6 +76,10 @@ public class ControlServlet extends HttpServlet {
         	List<Users> listUsers = peopleDAO.listAllPeople();
             request.setAttribute("listUsers", listUsers);
             RequestDispatcher dispatcher = request.getRequestDispatcher("PeopleList.jsp");       
+            dispatcher.forward(request, response);
+        }
+        else if(username.equals("root") && password.equals("pass1234")) {
+        	RequestDispatcher dispatcher = request.getRequestDispatcher("RootPage.jsp");       
             dispatcher.forward(request, response);
         }
         else {
