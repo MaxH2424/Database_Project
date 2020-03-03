@@ -119,22 +119,20 @@ public class PeopleDAO {
     	ResultSet resultSet = preparedStatement.executeQuery();
     	
     	if (resultSet.next()) {
-    		return true;
-    		
+    		return true; 		
     	}
     	else {
-
     		return false;
     	}
     	
     }
     
-    public boolean checkLogin(Users user) throws SQLException{
+    public boolean checkLogin(String user, String pass) throws SQLException{
     	connect_func();
-    	String sql= "SELECT username FROM login WHERE username = ? && password = ?";
+    	String sql= "SELECT username FROM login WHERE username = ? && pass = ?";
     	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-    	preparedStatement.setString(1, user.username);
-    	preparedStatement.setString(2, user.password);
+    	preparedStatement.setString(1, user);
+    	preparedStatement.setString(2, pass);
     	ResultSet resultSet = preparedStatement.executeQuery();
     	
     	if (resultSet.next()) {

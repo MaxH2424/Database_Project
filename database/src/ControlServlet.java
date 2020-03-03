@@ -68,10 +68,21 @@ public class ControlServlet extends HttpServlet {
     
     private void listPeople(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        List<Users> listUsers = peopleDAO.listAllPeople();
-        request.setAttribute("listUsers", listUsers);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("PeopleList.jsp");       
-        dispatcher.forward(request, response);
+    	String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        boolean checker = peopleDAO.checkLogin(username, password);
+        if (checker) {
+        	List<Users> listUsers = peopleDAO.listAllPeople();
+            request.setAttribute("listUsers", listUsers);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("PeopleList.jsp");       
+            dispatcher.forward(request, response);
+        }
+        else {
+        	RequestDispatcher dispatcher = request.getRequestDispatcher("Login.jsp");       
+            dispatcher.forward(request, response);
+        }
+        	
+        
     }
  
     // to insert a people
