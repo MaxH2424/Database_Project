@@ -9,17 +9,18 @@
 </head>
 <body>
 
-<%-- need to debut this part of the code to make it work, ideally we would like to see 
- all people are listed intially when the page is run as the entry page.
- 
+<%-- 
+
 <%
 if(request.getParameter("listPeople") == null) { // we want to make sure that we already have all the people
 	PeopleDAO peopleDAO = new PeopleDAO();        // listed in attribute 'listPeople'
-	List<People> listPeople = peopleDAO.listAllPeople();
+	List<Users> listPeople = peopleDAO.listAllPeople();
 	request.setAttribute("listPeople", listPeople);       
 }
 %>
+
 --%>
+
 
     <center>
         <h1>User Registration/Login</h1>

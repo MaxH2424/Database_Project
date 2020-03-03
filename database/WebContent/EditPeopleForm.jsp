@@ -20,8 +20,8 @@
         <table border="1" cellpadding="5">
             <caption>
                 <h2>Edit an Existing People</h2>
-            </caption>
-                    <input type="hidden" name="id" value="<c:out value='${users.id}' />" />  
+            </caption>    
+                    <input type="hidden" name="id" value="<c:out value='${users.id}' />" />    
             <tr>
                 <th>Username: </th>
                 <td>

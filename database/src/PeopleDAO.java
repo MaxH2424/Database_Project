@@ -1,4 +1,5 @@
 import java.io.IOException;
+
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.sql.DriverManager;
@@ -109,6 +110,41 @@ public class PeopleDAO {
 //        disconnect();
         return rowInserted;
     }     
+    
+    public boolean checkUser(Users user) throws SQLException{
+    	connect_func();
+    	String sql= "SELECT * FROM login WHERE username = ?";
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+    	preparedStatement.setString(1, user.username);
+    	ResultSet resultSet = preparedStatement.executeQuery();
+    	
+    	if (resultSet.next()) {
+    		return true;
+    		
+    	}
+    	else {
+
+    		return false;
+    	}
+    	
+    }
+    
+    public boolean checkLogin(Users user) throws SQLException{
+    	connect_func();
+    	String sql= "SELECT username FROM login WHERE username = ? && password = ?";
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+    	preparedStatement.setString(1, user.username);
+    	preparedStatement.setString(2, user.password);
+    	ResultSet resultSet = preparedStatement.executeQuery();
+    	
+    	if (resultSet.next()) {
+    		return true; 		
+    	}
+    	else {
+    		return false;
+    	}
+    	
+    }
      
     public boolean delete(int id) throws SQLException {
         String sql = "DELETE FROM login WHERE idLogin = ?";        

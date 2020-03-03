@@ -10,6 +10,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.JOptionPane;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -94,16 +95,27 @@ public class ControlServlet extends HttpServlet {
     // after the data of a people are inserted, this method will be called to insert the new people into the DB
     // 
     private void insertPeople(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException {
+            throws SQLException, IOException, ServletException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String first_name = request.getParameter("first_name");
         String last_name = request.getParameter("last_name");
         String age = request.getParameter("age");
         Users newUser = new Users(username, password, first_name, last_name, age);
-        peopleDAO.insert(newUser);
-        response.sendRedirect("list");  // The sendRedirect() method works at client side and sends a new request
+        boolean checker = peopleDAO.checkUser(newUser);
+        if (checker) {
+        	RequestDispatcher rd = request.getRequestDispatcher("InsertPeopleForm.jsp");
+        	rd.forward(request, response);
+        }
+        else {
+            peopleDAO.insert(newUser);
+        	RequestDispatcher rd = request.getRequestDispatcher("PeopleList.jsp");
+        	rd.forward(request, response);
+        }
+         // The sendRedirect() method works at client side and sends a new request
+        
     }
+    
  
     private void updatePeople(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
