@@ -52,12 +52,22 @@ public class ControlServlet extends HttpServlet {
             case "/delete":
             	deletePeople(request, response);
                 break;
+            case "/login":
+            	goToLoginScreen(request, response);
+            	break;
             case "/edit":
                 showEditForm(request, response);
                 break;
             case "/update":
             	updatePeople(request, response);
                 break;
+            case "/brand":
+            	listBrandNew(request, response);
+            	break;
+            case "/initialize":
+            	peopleDAO.initializeDatabase();
+            	goToLoginScreen(request, response);
+            	break;
             default:          	
             	listPeople(request, response);           	
                 break;
@@ -67,11 +77,24 @@ public class ControlServlet extends HttpServlet {
         }
     }
     
+    private void listBrandNew(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException{
+    	List<Users> listUsers = peopleDAO.listAllPeople();
+    	request.setAttribute("listUsers", listUsers);
+    	RequestDispatcher dispatcher = request.getRequestDispatcher("PeopleList.jsp");
+    	dispatcher.forward(request, response);
+    }
+    
+    
     private void listPeople(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
+    	PrintStream out = System.out;
     	String username = request.getParameter("username");
         String password = request.getParameter("password");
         boolean checker = peopleDAO.checkLogin(username, password);
+        out.println(username);
+        out.println(password);
+        
         if (checker) {
         	List<Users> listUsers = peopleDAO.listAllPeople();
             request.setAttribute("listUsers", listUsers);
@@ -96,12 +119,18 @@ public class ControlServlet extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("InsertPeopleForm.jsp");
         dispatcher.forward(request, response);
     }
+    
+    private void goToLoginScreen(HttpServletRequest request, HttpServletResponse response)
+    		throws ServletException, IOException{
+    	RequestDispatcher dispatcher = request.getRequestDispatcher("Login.jsp");
+        dispatcher.forward(request, response);
+    }
  
     // to present an update form to update an  existing Student
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Users existingPeople = peopleDAO.getPeople(id);
+        String email = request.getParameter("username");
+        Users existingPeople = peopleDAO.getPeople(email);
         RequestDispatcher dispatcher = request.getRequestDispatcher("EditPeopleForm.jsp");
         request.setAttribute("people", existingPeople);
         dispatcher.forward(request, response); // The forward() method works at server side, and It sends the same request and response objects to another servlet.
@@ -112,12 +141,19 @@ public class ControlServlet extends HttpServlet {
     // 
     private void insertPeople(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
+    	
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String first_name = request.getParameter("first_name");
         String last_name = request.getParameter("last_name");
+        String gender = request.getParameter("gender");
+        String favorites = request.getParameter("favorite");
         String age = request.getParameter("age");
-        Users newUser = new Users(username, password, first_name, last_name, age);
+        
+        int favorite = Integer.parseInt(favorites);
+		
+        
+        Users newUser = new Users(username, age, first_name, last_name, password, gender,favorite);
         boolean checker = peopleDAO.checkUser(newUser);
         if (checker) {
         	RequestDispatcher rd = request.getRequestDispatcher("InsertPeopleForm.jsp");
@@ -135,27 +171,30 @@ public class ControlServlet extends HttpServlet {
  
     private void updatePeople(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
+    	String users = request.getParameter("user");
         int id = Integer.parseInt(request.getParameter("id"));
         
         System.out.println(id);
         String username = request.getParameter("username");
+        String gender = request.getParameter("gender");
         String first_name = request.getParameter("first_name");
         String last_name = request.getParameter("last_name");
         String age = request.getParameter("age");
+        String favorites = request.getParameter("favorites");
         
         System.out.println(username);
         
-        Users user = new Users(id, username, first_name, last_name, age);
+        Users user = new Users(username, age, first_name, last_name, age, favorites);
         peopleDAO.update(user);
         response.sendRedirect("list");
     }
  
     private void deletePeople(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        String email = request.getParameter("user");
         //People people = new People(id);
-        peopleDAO.delete(id);
-        response.sendRedirect("list"); 
+        peopleDAO.delete(email);
+        response.sendRedirect("brand"); 
     }
 
 }

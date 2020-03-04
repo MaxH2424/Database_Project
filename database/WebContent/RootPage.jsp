@@ -8,12 +8,15 @@
     <title>People Management Application</title>
 </head>
 <body>
-
+	<form action="initialize" method="post">
     <center>
 		<h1>
+		
 		<button type=submit>Initialize Database</button>
 		</h1>
     </center>
+    
+    </form>
     
 </body>
 </html>

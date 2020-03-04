@@ -4,9 +4,9 @@
 <html>
 <head>
         <SCRIPT type="text/JavaScript">
-        function validate(user, pw, repw, fn, ln, age)
+        function validate(user, pw, repw, fn, ln, gender,age,favorite)
         {	
-        	if (user.value == "" || pw.value == "" || repw.value == "" || fn.value == "" || ln.value == "" || age.value == ""){
+        	if (user.value == "" || pw.value == "" || repw.value == "" || fn.value == "" || ln.value == "" || age.value == "" || gender.value== "" || favorite.value== ""){
         		alert("Please fill out all required forms");
         		event.preventDefault();
         	}
@@ -88,6 +88,22 @@
                 </td>
             </tr>
             <tr>
+                <th>Favorite Comedian (Number): </th>
+                <td>
+                    <input type="text" name="favorite" size="5"
+                            value="<c:out value='${users.favorite}' />"
+                    />
+                </td>
+            </tr>
+            <tr>
+                <th>Gender: </th>
+                <td>
+                    <input type="text" name="gender" size="5"
+                            value="<c:out value='${users.gender}' />"
+                    />
+                </td>
+            </tr>
+            <tr>
                 <th>Age: </th>
                 <td>
                     <input type="text" name="age" size="5"
@@ -96,15 +112,19 @@
                 </td>
             </tr>
             
+            
             <%String username = request.getParameter("username"); %>
            	<%String password = request.getParameter("password"); %> 
            	<%String repassword = request.getParameter("repassword"); %>
            	<%String first_name = request.getParameter("first_name"); %>
             <%String last_name = request.getParameter("last_name"); %>
+            <%String gender = request.getParameter("gender"); %>
            	<%String age = request.getParameter("age"); %>
+           	<%String favorite = request.getParameter("favorite"); %>
+           	
             <tr>
                 <td colspan="2" align="center">
-                    <button type="submit" name="validate_button" onclick="validate(username, password, repassword, first_name, last_name, age)" value="Register" class="btn">Register</button>
+                    <button type="submit" name="validate_button" onclick="validate(username, password, repassword, first_name, last_name, gender,age,favorite)" value="Register" class="btn">Register</button>
                 </td>
             </tr>
         </table>
