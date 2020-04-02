@@ -13,7 +13,7 @@
         <h2>
             <a href="new">Register</a>
             &nbsp;&nbsp;&nbsp;
-            <a href="list">Login</a>
+            <a href="login">Login</a>
              
         </h2>
     </center>

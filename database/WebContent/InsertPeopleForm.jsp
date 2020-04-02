@@ -23,14 +23,12 @@
     <title>People Application</title>
 </head>
 <body>
-
-
     <center>
         <h1>User Register/Login</h1>
         <h2>
             <a href="new">Register</a>
             &nbsp;&nbsp;&nbsp;
-            <a href="list">Login</a>
+            <a href="login">Login</a>
              
         </h2>
     </center>
@@ -51,7 +49,7 @@
                     <input type="email" name="username" size="45"
                             value="<c:out value='${users.username}'/>"
                         />
-                </td>
+                 </td>
             </tr>
             <tr>
                 <th>Password: </th>

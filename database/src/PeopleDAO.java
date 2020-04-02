@@ -49,9 +49,11 @@ public class PeopleDAO {
             } catch (ClassNotFoundException e) {
                 throw new SQLException(e);
             }
+            String url = "jdbc:mysql://127.0.0.1:3306/project?useTimezone=true&serverTimezone=UTC";
+            String name ="john";
+            String pass = "pass1234";
             connect = (Connection) DriverManager
-  			      .getConnection("jdbc:mysql://127.0.0.1:3306/project?"
-  			          + "user=john&password=pass1234");
+  			      .getConnection(url,name,pass);
             System.out.println(connect);
         }
     }
@@ -89,7 +91,7 @@ public class PeopleDAO {
         }
     }
          
-    public boolean insert(Users user) throws SQLException {
+    public boolean insertPeopleQuery (Users user) throws SQLException {
     	connect_func();
     	PrintStream out = System.out;
 		String sql = "insert into users(Username, Age, Gender, First_name, Last_name, Pass, Favorites) values (?, ?, ?, ?, ?, ?, ?)";
@@ -116,6 +118,30 @@ public class PeopleDAO {
         return rowInserted;
     }     
     
+    public boolean insertVideoQuery (Videos video) throws SQLException {
+    	connect_func();
+    	PrintStream out = System.out;
+		String sql = "insert into Videos(URL, Descript, Title, Tags) values (?, ?, ?, ?)";
+		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+		preparedStatement.setString(1, video.url);
+		preparedStatement.setString(2, video.description);
+		preparedStatement.setString(3, video.title);
+		preparedStatement.setString(4, video.tags);
+		
+		out.println("Start of Video Info");
+		out.println(video.url);
+		out.println(video.description);
+		out.println(video.title);
+		out.println(video.tags);
+		
+//		preparedStatement.executeUpdate();
+		
+        boolean rowInserted = preparedStatement.executeUpdate() > 0;
+        preparedStatement.close();
+//        disconnect();
+        return rowInserted;
+    }  
+    
     public boolean checkUser(Users user) throws SQLException{
     	connect_func();
     	String sql= "SELECT * FROM users WHERE username = ?";
@@ -129,7 +155,21 @@ public class PeopleDAO {
     	else {
     		return false;
     	}
+    }
+    
+    public boolean checkVideo(Videos video) throws SQLException{
+    	connect_func();
+    	String sql= "SELECT * FROM videos WHERE url = ?";
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+    	preparedStatement.setString(1, video.url);
+    	ResultSet resultSet = preparedStatement.executeQuery();
     	
+    	if (resultSet.next()) {
+    		return true; 		
+    	}
+    	else {
+    		return false;
+    	} 
     }
     
     public boolean checkLogin(String user, String pass) throws SQLException{
@@ -151,7 +191,8 @@ public class PeopleDAO {
     
     public void initializeDatabase() throws SQLException{
     	connect_func();
-    	String sql = "DROP DATABASE project";
+    	
+       	String sql = "DROP DATABASE project";
     	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
     	int resultSet = preparedStatement.executeUpdate();
     	
@@ -160,7 +201,7 @@ public class PeopleDAO {
     	resultSet = preparedStatement.executeUpdate();
     	
     	String sql3 = "USE project"; 
-    	
+  
     	preparedStatement = (PreparedStatement) connect.prepareStatement(sql3);
     	resultSet = preparedStatement.executeUpdate();
     	
@@ -563,17 +604,17 @@ public class PeopleDAO {
         return rowDeleted;     
     }
      
-    public boolean update(Users user) throws SQLException {
-        String sql = "update users set Age =?,First_name = ?,Last_name = ?,Password = ?, gender = ?, favorites = ?, where username = ?";
+    public boolean update(Users user, String refUser) throws SQLException {
+        String sql = "UPDATE users SET Username = ?,First_name = ?,Last_name = ?,Age =? WHERE Username = ?";
         connect_func();
         
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
         preparedStatement.setString(1, user.username);
-        preparedStatement.setString(2, user.password);
-        preparedStatement.setString(3, user.first_name);
-        preparedStatement.setString(4, user.last_name);
-        preparedStatement.setString(5, user.age);
-        preparedStatement.setInt(6, user.id);
+        preparedStatement.setString(2, user.first_name);
+        preparedStatement.setString(3, user.last_name);
+        preparedStatement.setString(4, user.age);
+        preparedStatement.setString(5, refUser);
+       // preparedStatement.setInt(6, user.id);
          
         boolean rowUpdated = preparedStatement.executeUpdate() > 0;
         preparedStatement.close();
@@ -582,8 +623,8 @@ public class PeopleDAO {
     }
 	
     public Users getPeople(String email) throws SQLException {
-    	Users user = null;
-        String sql = "SELECT * FROM users WHERE username = ?";
+    	Users users = null;
+        String sql = "SELECT * FROM users WHERE Username = ?";
          
         connect_func();
          
@@ -601,12 +642,12 @@ public class PeopleDAO {
             String last_name = resultSet.getString("last_name");
             String age = resultSet.getString("age");
              
-            user = new Users(username, age, first_name, last_name, password, gender, favorite);
+            users = new Users(username, age, first_name, last_name, password, gender, favorite);
+        
         }
          
         resultSet.close();
         statement.close();
-         
-        return user;
+        return users;
     }
 }

@@ -1,12 +1,12 @@
 
 public class Users {
-	protected int id;
-	protected String username;
-	protected String password;
-	protected String first_name;
-	protected String last_name;
-	protected String gender;
-	protected String age;
+	protected int id = 0;
+	protected String username = "NA";
+	protected String password = "NA";
+	protected String first_name = "NA";
+	protected String last_name ="NA";
+	protected String gender = "Male";
+	protected String age = "NA";
 	protected int favorite;
 	
 	public Users(){
@@ -15,6 +15,13 @@ public class Users {
 	
 	public Users(int id){
 		this.id = id;
+	}
+	
+	public Users(String username, String first_name, String last_name, String age) {
+		this.username = username;
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.age = age;
 	}
 	
 	public Users(String username, String age, String first_name, String last_name, String pass, String gender) {
@@ -39,6 +46,7 @@ public class Users {
 	}
 	
 	public Users(int userID, String username, String first_name, String last_name, String age){
+		this.id = userID;
 		this.username = username;
 		this.first_name = first_name;
 		this.last_name = last_name;
