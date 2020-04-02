@@ -52,6 +52,9 @@ public class ControlServlet extends HttpServlet {
             case "/insertVideo":
             	insertVideo(request, response);
             	break;
+            case "/goToVideoPg":
+            	goToVideoPg(request, response);
+            	break;
             case "/delete":
             	deletePeople(request, response);
                 break;
@@ -67,12 +70,17 @@ public class ControlServlet extends HttpServlet {
             case "/brand":
             	listBrandNew(request, response);
             	break;
+            case "/searchInterface":
+            	searchInterface(request, response);
+            	break;
+            case "/list":
+            	listBrandNew(request, response);
+            	break;
             case "/initialize":
             	peopleDAO.initializeDatabase();
             	listBrandNew(request, response);
             	break;
-            default:          	
-            	listPeople(request, response);           	
+            default:          	            	          	
                 break;
             }
         } catch (SQLException ex) {
@@ -88,8 +96,7 @@ public class ControlServlet extends HttpServlet {
     	dispatcher.forward(request, response);
     }
     
-    
-    private void listPeople(HttpServletRequest request, HttpServletResponse response)
+    private void searchInterface(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
     	PrintStream out = System.out;
     	String username = request.getParameter("username");
@@ -101,7 +108,7 @@ public class ControlServlet extends HttpServlet {
         if (checker) {
         	List<Users> listUsers = peopleDAO.listAllPeople();
             request.setAttribute("listUsers", listUsers);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("PeopleList.jsp");       
+            RequestDispatcher dispatcher = request.getRequestDispatcher("SearchInterface.jsp");       
             dispatcher.forward(request, response);
         }
         else if(username.equals("root") && password.equals("pass1234")) {
@@ -190,6 +197,12 @@ public class ControlServlet extends HttpServlet {
         }
          // The sendRedirect() method works at client side and sends a new request
         
+    }
+    
+    private void goToVideoPg(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+    	RequestDispatcher rd = request.getRequestDispatcher("InsertVideo.jsp");
+    	rd.forward(request, response);    	
     }
  
     private void updatePeople(HttpServletRequest request, HttpServletResponse response)
