@@ -78,12 +78,21 @@
                 </td>
             </tr>
             
+            <tr>
+                <th>Comedian: </th>
+                <td>
+                    <input type="text" name="tags" size="45"
+                            value="<c:out value='${videos.comedian}' />"
+                        />
+                </td>
+            </tr>
+            
             
             <%String url = request.getParameter("url"); %>
            	<%String title = request.getParameter("title"); %> 
            	<%String description = request.getParameter("description"); %>
            	<%String tags = request.getParameter("tags"); %>
-           
+           	<%String comedian = request.getParameter("comedian"); %>
            	
             <tr>
                 <td colspan="2" align="center">
