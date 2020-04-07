@@ -23,6 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.lang.System.*;
+
+import java.util.Date;
+import java.util.Calendar;
+import java.time.*;
+import java.time.format.DateTimeFormatter; 
 /**
  * Servlet implementation class Connect
  */
@@ -39,7 +44,7 @@ public class PeopleDAO {
 
     }
 	       
-    /**
+    /** 
      * @see HttpServlet#HttpServlet()
      */
     protected void connect_func() throws SQLException {
@@ -85,6 +90,35 @@ public class PeopleDAO {
         return listPeople;
     }
     
+    public List<Videos> findComVids(String com) throws SQLException{
+    	List<Videos> listVideos = new ArrayList<Videos>();
+    	String sql = "SELECT * FROM Videos "
+    			   + "INNER JOIN Comedian ON Videos.comedianID = Comedian.ID"
+    			   + "WHERE First_name = ? AND Last_name = ?";
+    	
+    	connect_func();
+    	
+    	String tokens[] = com.split(" ");
+    	if(tokens.length != 2) {throw new IllegalArgumentException();}
+    	String first = tokens[0];
+    	String last = tokens[1];
+    	
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        preparedStatement.setString(1, first);
+        preparedStatement.setString(2, last);
+ 
+    	ResultSet resultSet = preparedStatement.executeQuery();
+    	if (resultSet.next()) {
+    		
+            videos = new Vidoes(Title, URL, Descript, upload_date, );
+        
+        }
+         
+        resultSet.close();
+        statement.close();
+        return videos;
+    }
+    
     protected void disconnect() throws SQLException {
         if (connect != null && !connect.isClosed()) {
         	connect.close();
@@ -121,25 +155,28 @@ public class PeopleDAO {
     public boolean insertVideoQuery (Videos video) throws SQLException {
     	connect_func();
     	PrintStream out = System.out;
-		String sql = "insert into Videos(URL, Descript, Title, Tags) values (?, ?, ?, ?)";
+		String sql = "insert into Videos(Descript, upload_date, title, tags, URL, comedian_id) values (?, ?, ?, ?, ?, ?)";
 		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-		preparedStatement.setString(1, video.url);
-		preparedStatement.setString(2, video.description);
+		preparedStatement.setString(1, video.description);
+		preparedStatement.setDate(2, video.postDate);
 		preparedStatement.setString(3, video.title);
 		preparedStatement.setString(4, video.tags);
+		preparedStatement.setString(5, video.url);
+		preparedStatement.setInt(6, video.id);
 		
 		out.println("Start of Video Info");
 		out.println(video.url);
 		out.println(video.description);
 		out.println(video.title);
 		out.println(video.tags);
+		out.println(video.id);
 		
 //		preparedStatement.executeUpdate();
 		
         boolean rowInserted = preparedStatement.executeUpdate() > 0;
         preparedStatement.close();
 //        disconnect();
-        return rowInserted;
+        return rowInserted; 
     }  
     
     public boolean checkUser(Users user) throws SQLException{
@@ -650,4 +687,25 @@ public class PeopleDAO {
         statement.close();
         return users;
     }
+    
+	public int getComedianID(HttpServletRequest request, HttpServletResponse response, String first, String last)
+    		throws SQLException, IOException, ServletException{
+    	int id = 0;
+    	connect_func();
+    	PrintStream out = System.out;
+    	String returnSQL = "SELECT ID FROM comedian WHERE first_name = ? AND last_name = ?"; 
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(returnSQL);
+        preparedStatement.setString(1, first);
+        preparedStatement.setString(2, last);
+               
+        ResultSet resultSet = preparedStatement.executeQuery();
+        
+    	if(resultSet.next()) {
+    		id = resultSet.getInt("ID");
+    		out.println("the ID WE FOUND WAS: " + id);
+    	}
+    	resultSet.close();
+        
+        return id;
+        
 }
