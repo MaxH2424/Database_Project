@@ -183,7 +183,7 @@ public class ControlServlet extends HttpServlet {
         String video = request.getParameter("video");
         String title = request.getParameter("title");
         String description = request.getParameter("description");
-        String tags = request.getParameter("tags");		
+        String tags = request.getParameter("tags");
         
         Videos newVideo = new Videos(video, title, description, tags);
         boolean checker = peopleDAO.checkVideo(newVideo);

@@ -1,3 +1,4 @@
+import java.sql.Date;
 
 public class Videos {
 	protected int id = 0;
@@ -5,6 +6,7 @@ public class Videos {
 	protected String title = "NA";
 	protected String description = "NA";
 	protected String tags ="NA";
+	protected Date postDate;
 
 	
 	public Videos(){
@@ -13,6 +15,15 @@ public class Videos {
 	
 	public Videos(int id){
 		this.id = id;
+	}
+	
+	public Videos(String d, Date pdate, String title, String tags, String url, int id) {
+		this.description = d;
+		this.id = id;
+		this.postDate = pdate;
+		this.title = title;
+		this.tags = tags;
+		this.url = url;
 	}
 	
 	public Videos(String url, String title, String description, String tags) {
