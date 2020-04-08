@@ -20,7 +20,7 @@ import java.sql.PreparedStatement;
  
 /**
  * ControllerServlet.java
- * This servlet acts as a page controller for the application, handling all
+ * This servlet acts as a page controller fo  r the application, handling all
  * requests from the user.
  * @author www.codejava.net
  */
@@ -49,6 +49,12 @@ public class ControlServlet extends HttpServlet {
             case "/insert":
             	insertPeople(request, response);
                 break;
+            case "/insertVideo":
+            	insertVideo(request, response);
+            	break;
+            case "/goToVideoPg":
+            	goToVideoPg(request, response);
+            	break;
             case "/delete":
             	deletePeople(request, response);
                 break;
@@ -64,12 +70,20 @@ public class ControlServlet extends HttpServlet {
             case "/brand":
             	listBrandNew(request, response);
             	break;
+            case "/searchInterface":
+            	searchInterface(request, response);
+            	break;
+            case "/list":
+            	listBrandNew(request, response);
+            	break;
             case "/initialize":
             	peopleDAO.initializeDatabase();
-            	goToLoginScreen(request, response);
+            	listBrandNew(request, response);
             	break;
-            default:          	
-            	listPeople(request, response);           	
+            case "/search":
+            	listVids(request, response);
+            	break;
+            default:          	            	          	
                 break;
             }
         } catch (SQLException ex) {
@@ -85,8 +99,16 @@ public class ControlServlet extends HttpServlet {
     	dispatcher.forward(request, response);
     }
     
+    private void listVids(HttpServletRequest request, HttpServletResponse response) 
+    		throws SQLException, IOException, ServletException{
+    	String com = request.getParameter("comedian");
+    	List<Videos> listVidCom = peopleDAO.findComVids(com);
+        request.setAttribute("listVideos", listVidCom);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("PeopleList.jsp");       
+        dispatcher.forward(request, response);
+    }
     
-    private void listPeople(HttpServletRequest request, HttpServletResponse response)
+    private void searchInterface(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
     	PrintStream out = System.out;
     	String username = request.getParameter("username");
@@ -98,7 +120,7 @@ public class ControlServlet extends HttpServlet {
         if (checker) {
         	List<Users> listUsers = peopleDAO.listAllPeople();
             request.setAttribute("listUsers", listUsers);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("PeopleList.jsp");       
+            RequestDispatcher dispatcher = request.getRequestDispatcher("SearchInterface.jsp");       
             dispatcher.forward(request, response);
         }
         else if(username.equals("root") && password.equals("pass1234")) {
@@ -129,12 +151,11 @@ public class ControlServlet extends HttpServlet {
     // to present an update form to update an  existing Student
     private void showEditForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        String email = request.getParameter("username");
+        String email = request.getParameter("user");
         Users existingPeople = peopleDAO.getPeople(email);
         RequestDispatcher dispatcher = request.getRequestDispatcher("EditPeopleForm.jsp");
-        request.setAttribute("people", existingPeople);
+        request.setAttribute("user", existingPeople);
         dispatcher.forward(request, response); // The forward() method works at server side, and It sends the same request and response objects to another servlet.
- 
     }
  
     // after the data of a people are inserted, this method will be called to insert the new people into the DB
@@ -154,39 +175,63 @@ public class ControlServlet extends HttpServlet {
 		
         
         Users newUser = new Users(username, age, first_name, last_name, password, gender,favorite);
+        
         boolean checker = peopleDAO.checkUser(newUser);
         if (checker) {
         	RequestDispatcher rd = request.getRequestDispatcher("InsertPeopleForm.jsp");
         	rd.forward(request, response);
         }
         else {
-            peopleDAO.insert(newUser);
-        	RequestDispatcher rd = request.getRequestDispatcher("PeopleList.jsp");
-        	rd.forward(request, response);
+            peopleDAO.insertPeopleQuery(newUser);
+        	listBrandNew(request, response);
         }
          // The sendRedirect() method works at client side and sends a new request
         
     }
     
+    private void insertVideo(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+    	
+        String video = request.getParameter("video");
+        String title = request.getParameter("title");
+        String description = request.getParameter("description");
+        String tags = request.getParameter("tags");
+        
+        Videos newVideo = new Videos(video, title, description, tags);
+        boolean checker = peopleDAO.checkVideo(newVideo);
+        if (checker) {
+        	RequestDispatcher rd = request.getRequestDispatcher("InsertPeopleForm.jsp");
+        	rd.forward(request, response);
+        }
+        else {
+            peopleDAO.insertVideoQuery(newVideo);
+        	listBrandNew(request, response);
+        }
+         // The sendRedirect() method works at client side and sends a new request
+        
+    }
+    
+    private void goToVideoPg(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+    	RequestDispatcher rd = request.getRequestDispatcher("InsertVideo.jsp");
+    	rd.forward(request, response);    	
+    }
  
     private void updatePeople(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-    	String users = request.getParameter("user");
-        int id = Integer.parseInt(request.getParameter("id"));
-        
-        System.out.println(id);
-        String username = request.getParameter("username");
-        String gender = request.getParameter("gender");
+    	String refUser = request.getParameter("refuser");
+    	String username = request.getParameter("username");
+        //int id = Integer.parseInt(request.getParameter("id"));
+       
+        //System.out.println(id);
         String first_name = request.getParameter("first_name");
         String last_name = request.getParameter("last_name");
         String age = request.getParameter("age");
-        String favorites = request.getParameter("favorites");
+        System.out.println(refUser);
         
-        System.out.println(username);
-        
-        Users user = new Users(username, age, first_name, last_name, age, favorites);
-        peopleDAO.update(user);
-        response.sendRedirect("list");
+        Users user = new Users(username, first_name, last_name, age);
+        peopleDAO.update(user, refUser);
+        response.sendRedirect("brand");
     }
  
     private void deletePeople(HttpServletRequest request, HttpServletResponse response)

@@ -11,7 +11,7 @@
         <h2>
             <a href="new">Add New People</a>
             &nbsp;&nbsp;&nbsp;
-            <a href="list">List All People</a>
+            <a href="brand">List All People</a>
              
         </h2>
     </center>
@@ -20,37 +20,38 @@
         <table border="1" cellpadding="5">
             <caption>
                 <h2>Edit an Existing People</h2>
-            </caption>    
-                    <input type="hidden" name="id" value="<c:out value='${users.id}' />" />    
-            <tr>
-                <th>Username: </th>
-                <td>
-                    <input type="text" name="name" size="45"
-                            value="<c:out value='${users.username}' />"
+            </caption>  
+           
+                <input type="hidden" name="refuser" value="${user.user}" />      
+                <tr>
+                	<th>Username: </th>
+                		<td>
+                    <input type="text" name="username" size="45"
+                            value="<c:out value='${user.user}' />"
                         />
                 </td>
             </tr>
             <tr>
                 <th>First Name: </th>
                 <td>
-                    <input type="text" name="address" size="45"
-                            value="<c:out value='${users.first_name}' />"
+                    <input type="text" name="first_name" size="45"
+                            value="<c:out value='${user.first}' />"
                     />
                 </td>
             </tr>
             <tr>
                 <th>Last Name: </th>
                 <td>
-                    <input type="text" name="status" size="45"
-                            value="<c:out value='${users.last_name}' />"
-                    />
+                    <input type="text" name="last_name" size="45"
+                            value="<c:out value='${user.last }'/>"
+                            />
                 </td>
             </tr>
             <tr>
                 <th>Age: </th>
                 <td>
-                    <input type="text" name="status" size="5"
-                            value="<c:out value='${users.age}' />"
+                    <input type="text" name="age" size="5"
+                            value="<c:out value='${user.age }'/>"
                     />
                 </td>
             </tr>

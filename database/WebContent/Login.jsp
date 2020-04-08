@@ -13,12 +13,12 @@
         <h2>
             <a href="new">Register</a>
             &nbsp;&nbsp;&nbsp;
-            <a href="list">Login</a>
+            <a href="login">Login</a>
              
         </h2>
     </center>
     <div align="center">
-            <form action="list" method="post" name="match">
+            <form action="searchInterface" method="post" name="match">
         <table border="1" cellpadding="5">
             <caption>
                 <h2>

@@ -23,6 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.lang.System.*;
+
+import java.util.Date;
+import java.util.Calendar;
+import java.time.*;
+import java.time.format.DateTimeFormatter; 
 /**
  * Servlet implementation class Connect
  */
@@ -39,7 +44,7 @@ public class PeopleDAO {
 
     }
 	       
-    /**
+    /** 
      * @see HttpServlet#HttpServlet()
      */
     protected void connect_func() throws SQLException {
@@ -49,9 +54,11 @@ public class PeopleDAO {
             } catch (ClassNotFoundException e) {
                 throw new SQLException(e);
             }
+            String url = "jdbc:mysql://127.0.0.1:3306/project?useTimezone=true&serverTimezone=UTC";
+            String name ="john";
+            String pass = "pass1234";
             connect = (Connection) DriverManager
-  			      .getConnection("jdbc:mysql://127.0.0.1:3306/project?"
-  			          + "user=john&password=pass1234");
+  			      .getConnection(url,name,pass);
             System.out.println(connect);
         }
     }
@@ -83,13 +90,47 @@ public class PeopleDAO {
         return listPeople;
     }
     
+    public List<Videos> findComVids(String com) throws SQLException{
+    	List<Videos> listVideos = new ArrayList<Videos>();
+    	String sql = "SELECT * FROM Videos "
+    			   + "INNER JOIN Comedian ON Videos.comedianID = Comedian.ID"
+    			   + "WHERE First_name = ? AND Last_name = ?";
+    	
+    	connect_func();
+    	
+    	String tokens[] = com.split(" ");
+    	if(tokens.length != 2) {throw new IllegalArgumentException();}
+    	String first = tokens[0];
+    	String last = tokens[1];
+    	
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        preparedStatement.setString(1, first);
+        preparedStatement.setString(2, last);
+ 
+    	ResultSet resultSet = preparedStatement.executeQuery();
+    	while (resultSet.next()) {
+            String Descript = resultSet.getString("Descript");
+            Date upload_date = resultSet.getDate("post_date");
+            String Title = resultSet.getString("Title");
+            String URL = resultSet.getString("URL");
+            String first_name = resultSet.getString("First_name");
+            String last_name = resultSet.getString("Last_name");
+            Videos video = new Videos(URL);
+            listVideos.add(video);
+        }
+         
+        resultSet.close();
+        statement.close();
+        return listVideos;
+    }
+    
     protected void disconnect() throws SQLException {
         if (connect != null && !connect.isClosed()) {
         	connect.close();
         }
     }
          
-    public boolean insert(Users user) throws SQLException {
+    public boolean insertPeopleQuery (Users user) throws SQLException {
     	connect_func();
     	PrintStream out = System.out;
 		String sql = "insert into users(Username, Age, Gender, First_name, Last_name, Pass, Favorites) values (?, ?, ?, ?, ?, ?, ?)";
@@ -116,6 +157,33 @@ public class PeopleDAO {
         return rowInserted;
     }     
     
+    public boolean insertVideoQuery (Videos video) throws SQLException {
+    	connect_func();
+    	PrintStream out = System.out;
+		String sql = "insert into Videos(Descript, upload_date, title, tags, URL, comedian_id) values (?, ?, ?, ?, ?, ?)";
+		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+		preparedStatement.setString(1, video.description);
+		preparedStatement.setDate(2, video.postDate);
+		preparedStatement.setString(3, video.title);
+		preparedStatement.setString(4, video.tags);
+		preparedStatement.setString(5, video.url);
+		preparedStatement.setInt(6, video.id);
+		
+		out.println("Start of Video Info");
+		out.println(video.url);
+		out.println(video.description);
+		out.println(video.title);
+		out.println(video.tags);
+		out.println(video.id);
+		
+//		preparedStatement.executeUpdate();
+		
+        boolean rowInserted = preparedStatement.executeUpdate() > 0;
+        preparedStatement.close();
+//        disconnect();
+        return rowInserted; 
+    }  
+    
     public boolean checkUser(Users user) throws SQLException{
     	connect_func();
     	String sql= "SELECT * FROM users WHERE username = ?";
@@ -129,7 +197,21 @@ public class PeopleDAO {
     	else {
     		return false;
     	}
+    }
+    
+    public boolean checkVideo(Videos video) throws SQLException{
+    	connect_func();
+    	String sql= "SELECT * FROM videos WHERE url = ?";
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+    	preparedStatement.setString(1, video.url);
+    	ResultSet resultSet = preparedStatement.executeQuery();
     	
+    	if (resultSet.next()) {
+    		return true; 		
+    	}
+    	else {
+    		return false;
+    	} 
     }
     
     public boolean checkLogin(String user, String pass) throws SQLException{
@@ -151,7 +233,8 @@ public class PeopleDAO {
     
     public void initializeDatabase() throws SQLException{
     	connect_func();
-    	String sql = "DROP DATABASE project";
+    	
+       	String sql = "DROP DATABASE project";
     	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
     	int resultSet = preparedStatement.executeUpdate();
     	
@@ -160,7 +243,7 @@ public class PeopleDAO {
     	resultSet = preparedStatement.executeUpdate();
     	
     	String sql3 = "USE project"; 
-    	
+  
     	preparedStatement = (PreparedStatement) connect.prepareStatement(sql3);
     	resultSet = preparedStatement.executeUpdate();
     	
@@ -563,17 +646,17 @@ public class PeopleDAO {
         return rowDeleted;     
     }
      
-    public boolean update(Users user) throws SQLException {
-        String sql = "update users set Age =?,First_name = ?,Last_name = ?,Password = ?, gender = ?, favorites = ?, where username = ?";
+    public boolean update(Users user, String refUser) throws SQLException {
+        String sql = "UPDATE users SET Username = ?,First_name = ?,Last_name = ?,Age =? WHERE Username = ?";
         connect_func();
         
         preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
         preparedStatement.setString(1, user.username);
-        preparedStatement.setString(2, user.password);
-        preparedStatement.setString(3, user.first_name);
-        preparedStatement.setString(4, user.last_name);
-        preparedStatement.setString(5, user.age);
-        preparedStatement.setInt(6, user.id);
+        preparedStatement.setString(2, user.first_name);
+        preparedStatement.setString(3, user.last_name);
+        preparedStatement.setString(4, user.age);
+        preparedStatement.setString(5, refUser);
+       // preparedStatement.setInt(6, user.id);
          
         boolean rowUpdated = preparedStatement.executeUpdate() > 0;
         preparedStatement.close();
@@ -582,8 +665,8 @@ public class PeopleDAO {
     }
 	
     public Users getPeople(String email) throws SQLException {
-    	Users user = null;
-        String sql = "SELECT * FROM users WHERE username = ?";
+    	Users users = null;
+        String sql = "SELECT * FROM users WHERE Username = ?";
          
         connect_func();
          
@@ -601,12 +684,33 @@ public class PeopleDAO {
             String last_name = resultSet.getString("last_name");
             String age = resultSet.getString("age");
              
-            user = new Users(username, age, first_name, last_name, password, gender, favorite);
+            users = new Users(username, age, first_name, last_name, password, gender, favorite);
+        
         }
          
         resultSet.close();
         statement.close();
-         
-        return user;
+        return users;
     }
+    
+	public int getComedianID(HttpServletRequest request, HttpServletResponse response, String first, String last)
+    		throws SQLException, IOException, ServletException{
+    	int id = 0;
+    	connect_func();
+    	PrintStream out = System.out;
+    	String returnSQL = "SELECT ID FROM comedian WHERE first_name = ? AND last_name = ?"; 
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(returnSQL);
+        preparedStatement.setString(1, first);
+        preparedStatement.setString(2, last);
+               
+        ResultSet resultSet = preparedStatement.executeQuery();
+        
+    	if(resultSet.next()) {
+    		id = resultSet.getInt("ID");
+    		out.println("the ID WE FOUND WAS: " + id);
+    	}
+    	resultSet.close();
+        
+        return id;
+        
 }
