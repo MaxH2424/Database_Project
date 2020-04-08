@@ -80,6 +80,9 @@ public class ControlServlet extends HttpServlet {
             	peopleDAO.initializeDatabase();
             	listBrandNew(request, response);
             	break;
+            case "/search":
+            	listVids(request, response);
+            	break;
             default:          	            	          	
                 break;
             }
@@ -94,6 +97,15 @@ public class ControlServlet extends HttpServlet {
     	request.setAttribute("listUsers", listUsers);
     	RequestDispatcher dispatcher = request.getRequestDispatcher("PeopleList.jsp");
     	dispatcher.forward(request, response);
+    }
+    
+    private void listVids(HttpServletRequest request, HttpServletResponse response) 
+    		throws SQLException, IOException, ServletException{
+    	String com = request.getParameter("comedian");
+    	List<Videos> listVidCom = peopleDAO.findComVids(com);
+        request.setAttribute("listVideos", listVidCom);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("PeopleList.jsp");       
+        dispatcher.forward(request, response);
     }
     
     private void searchInterface(HttpServletRequest request, HttpServletResponse response)
