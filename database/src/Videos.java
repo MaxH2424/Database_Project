@@ -17,6 +17,10 @@ public class Videos {
 		this.id = id;
 	}
 	
+	public Videos(String url) {
+		this.url = url;
+	}
+	
 	public Videos(String d, Date pdate, String title, String tags, String url, int id) {
 		this.description = d;
 		this.id = id;

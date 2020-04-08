@@ -108,15 +108,20 @@ public class PeopleDAO {
         preparedStatement.setString(2, last);
  
     	ResultSet resultSet = preparedStatement.executeQuery();
-    	if (resultSet.next()) {
-    		
-            videos = new Vidoes(Title, URL, Descript, upload_date, );
-        
+    	while (resultSet.next()) {
+            String Descript = resultSet.getString("Descript");
+            Date upload_date = resultSet.getDate("post_date");
+            String Title = resultSet.getString("Title");
+            String URL = resultSet.getString("URL");
+            String first_name = resultSet.getString("First_name");
+            String last_name = resultSet.getString("Last_name");
+            Videos video = new Videos(URL);
+            listVideos.add(video);
         }
          
         resultSet.close();
         statement.close();
-        return videos;
+        return listVideos;
     }
     
     protected void disconnect() throws SQLException {
