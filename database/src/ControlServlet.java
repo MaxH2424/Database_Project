@@ -117,6 +117,20 @@ public class ControlServlet extends HttpServlet {
     	dispatcher.forward(request, response);
     }
     
+    private void listTags(HttpServletRequest request, HttpServletResponse response) 
+    		throws SQLException, IOException, ServletException{
+    	PrintStream out = System.out;
+    	String tag = request.getParameter("searchBar");
+    	out.println(tag);
+    	List<Videos> listVidTag = peopleDAO.findComVids(tag);
+    	for(int i = 0; i < listVidTag.size(); i++) { // Output of urls
+    		out.println(listVidTag.get(i).getUrl());
+    	}
+        request.setAttribute("listVidTag", listVidTag);
+    	RequestDispatcher dispatcher = request.getRequestDispatcher("SearchComedian_Tag.jsp");
+    	dispatcher.forward(request, response);
+    }
+    
     private void comedianTagScreen(HttpServletRequest request, HttpServletResponse response)
     		throws SQLException, IOException, ServletException{
     	RequestDispatcher rd = request.getRequestDispatcher("SearchComedian_Tag.jsp");
