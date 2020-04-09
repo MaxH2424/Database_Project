@@ -90,40 +90,6 @@ public class PeopleDAO {
         return listPeople;
     }
     
-    public List<Videos> findComVids(String com) throws SQLException{
-    	List<Videos> listVideos = new ArrayList<Videos>();
-    	String sql = "SELECT * FROM Videos "
-    			   + "INNER JOIN Comedian ON Videos.comedianID = Comedian.ID"
-    			   + "WHERE First_name = ? AND Last_name = ?";
-    	
-    	connect_func();
-    	
-    	String tokens[] = com.split(" ");
-    	if(tokens.length != 2) {throw new IllegalArgumentException();}
-    	String first = tokens[0];
-    	String last = tokens[1];
-    	
-    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-        preparedStatement.setString(1, first);
-        preparedStatement.setString(2, last);
- 
-    	ResultSet resultSet = preparedStatement.executeQuery();
-    	while (resultSet.next()) {
-            String Descript = resultSet.getString("Descript");
-            Date upload_date = resultSet.getDate("post_date");
-            String Title = resultSet.getString("Title");
-            String URL = resultSet.getString("URL");
-            String first_name = resultSet.getString("First_name");
-            String last_name = resultSet.getString("Last_name");
-            Videos video = new Videos(URL);
-            listVideos.add(video);
-        }
-         
-        resultSet.close();
-        statement.close();
-        return listVideos;
-    }
-    
     protected void disconnect() throws SQLException {
         if (connect != null && !connect.isClosed()) {
         	connect.close();
@@ -713,4 +679,33 @@ public class PeopleDAO {
         
         return id;
         
+		}
+	
+    public List<Videos> findComVids(String com) throws SQLException{
+    	PrintStream out = System.out;
+    	List<Videos> listVideos = new ArrayList<Videos>();
+    	String sql = "SELECT videos.*, comedian.* FROM videos, comedian WHERE comedian_id = ID AND First_name = ? AND Last_name =?";
+    	connect_func();
+    	
+    	String tokens[] = com.split(" ");
+    	if(tokens.length != 2) {throw new IllegalArgumentException();}
+    	String first = tokens[0];
+    	String last = tokens[1];
+    	
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        preparedStatement.setString(1, first);
+        preparedStatement.setString(2, last);
+ 
+        ResultSet resultSet = preparedStatement.executeQuery();
+    	while(resultSet.next()) {
+            String URL = resultSet.getString("URL");
+            out.println(URL);
+            Videos video = new Videos(URL);
+            listVideos.add(video);
+            
+        }
+    	resultSet.close();
+        
+        return listVideos;
+    }
 }
