@@ -137,6 +137,7 @@ public class PeopleDAO {
 		
 		out.println("Start of Video Info");
 		out.println(video.url);
+		out.println(video.postDate);
 		out.println(video.description);
 		out.println(video.title);
 		out.println(video.tags);

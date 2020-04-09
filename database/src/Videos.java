@@ -6,12 +6,7 @@ public class Videos {
 	protected String title = "NA";
 	protected String description = "NA";
 	protected String tags ="NA";
-	protected Date postDate;
-
-	
-	public Videos(){
-		
-	}
+	protected java.sql.Date postDate;
 	
 	public Videos(int id){
 		this.id = id;
@@ -21,7 +16,7 @@ public class Videos {
 		this.url = url;
 	}
 	
-	public Videos(String d, Date pdate, String title, String tags, String url, int id) {
+	public Videos(String d, java.sql.Date pdate, String title, String tags, String url, int id) {
 		this.description = d;
 		this.id = id;
 		this.postDate = pdate;

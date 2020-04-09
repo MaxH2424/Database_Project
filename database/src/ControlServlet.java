@@ -3,6 +3,7 @@ import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
  
 import javax.servlet.RequestDispatcher;
@@ -203,15 +204,34 @@ public class ControlServlet extends HttpServlet {
         
     }
     
-    private void insertVideo(HttpServletRequest request, HttpServletResponse response)
+	@SuppressWarnings("deprecation")
+	private void insertVideo(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
     	
-        String video = request.getParameter("video");
+        String video = request.getParameter("url");
         String title = request.getParameter("title");
         String description = request.getParameter("description");
         String tags = request.getParameter("tags");
+        String comedian = request.getParameter("comedian");
         
-        Videos newVideo = new Videos(video, title, description, tags);
+        String tokens[] = comedian.split(" ");
+    	if(tokens.length != 2) {throw new IllegalArgumentException();}
+    	String first = tokens[0];
+    	String last = tokens[1];
+    	
+    	PeopleDAO comID = new PeopleDAO();
+    	int id = comID.getComedianID(request, response, first, last);
+    	
+    	java.util.Date todayDate = new java.util.Date();
+    	@SuppressWarnings("deprecation")
+		int year = todayDate.getYear();
+    	int month = todayDate.getMonth();
+    	int day = todayDate.getDay();
+    	
+    	java.sql.Date postDate = new java.sql.Date(year, month, day);
+    	
+        
+        Videos newVideo = new Videos(video, postDate, title, description, tags, id);
         boolean checker = peopleDAO.checkVideo(newVideo);
         if (checker) {
         	RequestDispatcher rd = request.getRequestDispatcher("InsertPeopleForm.jsp");
