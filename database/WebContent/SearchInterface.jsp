@@ -6,20 +6,25 @@
 <meta charset="ISO-8859-1">
 <title>Search Interface</title>
 </head>
-<body>
+<body style="background-color:#00FFFF;">
 <form action="list" method="post" name="match">
 	<center>
-		Search Interface<br><br><br><button>List of People </button>&nbsp;&nbsp;
+		Search Interface<br><br><br><button style="height:20px;width:140px">List of People</button>
 	</center>
 </form>
 <form action="goToVideoPg" method="post" name="match">
 	<center>
-		<br><button>Create a Video</button>&nbsp;&nbsp;
+		<br><button style="height:20px;width:140px">Create a Video</button>
 	</center>
 </form>
-<form action="list" method="post" name="match">
+<form action="search" method="post" name="match">
 	<center>
-		<br><button>Comedian</button>
+		<br><button style="height:20px;width:140px">Comedian/Tags</button>
+	</center>
+</form>
+<form action="" method="post" name="match">
+	<center>
+		<br><button style ="height:20px;width:140px">Open for a New Button</button>
 	</center>
 </form>
 </body>

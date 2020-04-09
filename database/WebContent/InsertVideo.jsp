@@ -81,7 +81,7 @@
             <tr>
                 <th>Comedian: </th>
                 <td>
-                    <input type="text" name="tags" size="45"
+                    <input type="text" name="comedian" size="45"
                             value="<c:out value='${videos.comedian}' />"
                         />
                 </td>

@@ -81,7 +81,10 @@ public class ControlServlet extends HttpServlet {
             	listBrandNew(request, response);
             	break;
             case "/search":
-            	listVids(request, response);
+            	comedianTagScreen(request, response);
+            	break;
+            case "/listCom":
+            	listVids(request,response);
             	break;
             default:          	            	          	
                 break;
@@ -101,11 +104,19 @@ public class ControlServlet extends HttpServlet {
     
     private void listVids(HttpServletRequest request, HttpServletResponse response) 
     		throws SQLException, IOException, ServletException{
-    	String com = request.getParameter("comedian");
+    	PrintStream out = System.out;
+    	String com = request.getParameter("searchBar");
+    	out.println(com);
     	List<Videos> listVidCom = peopleDAO.findComVids(com);
         request.setAttribute("listVideos", listVidCom);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("PeopleList.jsp");       
+        RequestDispatcher dispatcher = request.getRequestDispatcher("SearchComedian_Tag.jsp");       
         dispatcher.forward(request, response);
+    }
+    
+    private void comedianTagScreen(HttpServletRequest request, HttpServletResponse response)
+    		throws SQLException, IOException, ServletException{
+    	RequestDispatcher rd = request.getRequestDispatcher("SearchComedian_Tag.jsp");
+    	rd.forward(request, response);   	
     }
     
     private void searchInterface(HttpServletRequest request, HttpServletResponse response)
