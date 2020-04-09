@@ -685,27 +685,31 @@ public class PeopleDAO {
     	PrintStream out = System.out;
     	List<Videos> listVideos = new ArrayList<Videos>();
     	String sql = "SELECT videos.*, comedian.* FROM videos, comedian WHERE comedian_id = ID AND First_name = ? AND Last_name =?";
-    	connect_func();
     	
     	String tokens[] = com.split(" ");
     	if(tokens.length != 2) {throw new IllegalArgumentException();}
     	String first = tokens[0];
     	String last = tokens[1];
-    	
+    			
+    	connect_func();
     	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
         preparedStatement.setString(1, first);
         preparedStatement.setString(2, last);
- 
-        ResultSet resultSet = preparedStatement.executeQuery();
-    	while(resultSet.next()) {
+        ResultSet resultSet = preparedStatement.executeQuery(); 
+        
+        int i = 0;
+        while(i < 2) {
+        	resultSet.next();
             String URL = resultSet.getString("URL");
             out.println(URL);
             Videos video = new Videos(URL);
-            listVideos.add(video);
-            
+            listVideos.add(video);            
+            out.println(i);
+            i++;           
         }
-    	resultSet.close();
         
+        out.println("WE MADE IT");
+        resultSet.close();
         return listVideos;
     }
 }
