@@ -108,9 +108,12 @@ public class ControlServlet extends HttpServlet {
     	String com = request.getParameter("searchBar");
     	out.println(com);
     	List<Videos> listVidCom = peopleDAO.findComVids(com);
-        request.setAttribute("listVideos", listVidCom);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("SearchComedian_Tag.jsp");       
-        dispatcher.forward(request, response);
+    	for(int i = 0; i < listVidCom.size(); i++) { // Output of urls
+    		out.println(listVidCom.get(i).getUrl());
+    	}
+        request.setAttribute("listVidCom", listVidCom);
+    	RequestDispatcher dispatcher = request.getRequestDispatcher("SearchComedian_Tag.jsp");
+    	dispatcher.forward(request, response);
     }
     
     private void comedianTagScreen(HttpServletRequest request, HttpServletResponse response)
