@@ -25,6 +25,12 @@ public class Videos {
 		this.url = url;
 	}
 	
+	public Videos(String url, String title, String description) {
+		this.url = url;
+		this.title = title;
+		this.description = description;		
+	}
+	
 	public Videos(String url, String title, String description, String tags) {
 		this.url = url;
 		this.title = title;

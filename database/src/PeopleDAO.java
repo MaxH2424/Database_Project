@@ -90,6 +90,27 @@ public class PeopleDAO {
         return listPeople;
     }
     
+    public List<Videos> listAllVideos() throws SQLException {
+        List<Videos> listVideos = new ArrayList<Videos>();        
+        String sql = "SELECT * FROM videos";      
+        connect_func();      
+        statement =  (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         
+        while (resultSet.next()) {
+            String url = resultSet.getString("URL");
+            String title = resultSet.getString("Title");
+            String description = resultSet.getString("Descript");
+       
+            Videos video = new Videos(url, title, description);
+            listVideos.add(video);
+        }        
+        resultSet.close();
+        statement.close();         
+        disconnect();        
+        return listVideos;
+    }
+    
     protected void disconnect() throws SQLException {
         if (connect != null && !connect.isClosed()) {
         	connect.close();
