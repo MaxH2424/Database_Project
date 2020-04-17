@@ -81,7 +81,7 @@ public class PeopleDAO {
             
             int favorite = Integer.parseInt(favorites);
              
-            Users user = new Users(username, age, first_name, last_name, pass, gender,favorite);
+            Users user = new Users(username, age, first_name, last_name, pass, gender, favorite);
             listPeople.add(user);
         }        
         resultSet.close();
@@ -90,6 +90,30 @@ public class PeopleDAO {
         return listPeople;
     }
     
+<<<<<<< HEAD
+    public List<Videos> findTagVids(String tag) throws SQLException{
+	PrintStream out = System.out;
+	List<Videos> listVideos = new ArrayList<Videos>();
+	String sql = "SELECT URL FROM videos WHERE tags = ?";
+	connect_func();
+
+	
+	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+    preparedStatement.setString(1, tag);
+
+    ResultSet resultSet = preparedStatement.executeQuery();
+	while(resultSet.next()) {
+        String URL = resultSet.getString("URL");
+        out.println(URL);
+        Videos video = new Videos(URL);
+        listVideos.add(video);
+        
+    }
+	resultSet.close();
+    
+    return listVideos;
+}
+=======
     public List<Videos> listAllVideos() throws SQLException {
         List<Videos> listVideos = new ArrayList<Videos>();        
         String sql = "SELECT * FROM videos";      
@@ -115,6 +139,7 @@ public class PeopleDAO {
         disconnect();        
         return listVideos;
     }
+>>>>>>> master
     
     protected void disconnect() throws SQLException {
         if (connect != null && !connect.isClosed()) {

@@ -1,4 +1,4 @@
-<%@ page import="java.util.List" %>
+    <%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
   <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
@@ -34,8 +34,20 @@
                 <tr>
                     <td><a href="${listVidCom.url}"><c:out value="${listVidCom.url}"/></a></td>
                 </tr>
+<<<<<<< HEAD
+            </c:forEach> 
+
+            <tr></tr>
+
+            <c:forEach var="listVidTag" items="${listVidTag}">
+                <tr>
+                    <td><c:out value="${listVidTag.url}" /></td>
+                </tr>
+            </c:forEach>           
+=======
             </c:forEach>
          
+>>>>>>> master
         </table>
     </div>
 
