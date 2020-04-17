@@ -84,6 +84,9 @@ public class ControlServlet extends HttpServlet {
             case "/search":
             	comedianTagScreen(request, response);
             	break;
+            case "/comment":
+            	listUTD(request, response);
+            	break;
             case "/listCom":
             	listVids(request,response);
             	break;
@@ -114,6 +117,24 @@ public class ControlServlet extends HttpServlet {
     	}
         request.setAttribute("listVidCom", listVidCom);
     	RequestDispatcher dispatcher = request.getRequestDispatcher("SearchComedian_Tag.jsp");
+    	dispatcher.forward(request, response);
+    }
+    
+    private void listUTD(HttpServletRequest request, HttpServletResponse response)
+    		throws SQLException, IOException, ServletException{
+    	// URL, Title, Description
+    	PrintStream out = System.out;
+    	List<Videos> listUTD = peopleDAO.listAllVideos();
+    	out.println("Printng of UTD");
+    	for(int i = 0; i < listUTD.size(); i++) { // Output of urls
+    		out.println(listUTD.get(i).getUrl());
+    		out.println(listUTD.get(i).getTitle());
+    		out.println(listUTD.get(i).getDescription());
+    	}
+    	out.println("End of UTD");
+    	out.println("-------------");
+    	request.setAttribute("listUTD", listUTD);
+    	RequestDispatcher dispatcher = request.getRequestDispatcher("Comment.jsp");
     	dispatcher.forward(request, response);
     }
     
