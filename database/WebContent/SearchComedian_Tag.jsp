@@ -9,7 +9,7 @@
 <title>Search Comedian/Tag</title>
 </head>
 <body>  
-<form action="listCom" method="post" name="match" id="searchSubmit">   
+<form action="searchInterface" method="post" name="match" id="searchSubmit">   
 
     <center>
         <h1>Search a Comedian or Tags</h1>
@@ -23,17 +23,18 @@
         <button>></button>
     </center>
     
-     
+
     <div align="center">
         <table border="1" cellpadding="5">
             <caption><h2>List of Videos</h2></caption>
             <tr>
-                <th>Comedian: </th>
+                <th>URL: </th>
             </tr>
             <c:forEach var="listVidCom" items="${listVidCom}">
                 <tr>
-                    <td><c:out value="${listVidCom.url}" /></td>
+                    <td><a href="${listVidCom.url}"><c:out value="${listVidCom.url}"/></a></td>
                 </tr>
+<<<<<<< HEAD
             </c:forEach> 
 
             <tr></tr>
@@ -43,10 +44,14 @@
                     <td><c:out value="${listVidTag.url}" /></td>
                 </tr>
             </c:forEach>           
+=======
+            </c:forEach>
+         
+>>>>>>> master
         </table>
     </div>
-</form>
-  
+
+      </form> 
 </body>
 		
 </html>

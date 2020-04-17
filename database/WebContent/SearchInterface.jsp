@@ -22,9 +22,9 @@
 		<br><button style="height:20px;width:140px">Comedian/Tags</button>
 	</center>
 </form>
-<form action="" method="post" name="match">
+<form action="comment" method="post" name="match">
 	<center>
-		<br><button style ="height:20px;width:140px">Open for a New Button</button>
+		<br><button style ="height:20px;width:140px">Leave a Comment!</button>
 	</center>
 </form>
 </body>
