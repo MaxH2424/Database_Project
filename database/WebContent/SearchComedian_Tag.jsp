@@ -23,7 +23,7 @@
         <button>></button>
     </center>
     
-     
+
     <div align="center">
         <table border="1" cellpadding="5">
             <caption><h2>List of Videos</h2></caption>
@@ -38,8 +38,8 @@
          
         </table>
     </div>
-</form>
-  
+
+      </form> 
 </body>
 		
 </html>

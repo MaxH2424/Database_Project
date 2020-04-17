@@ -101,8 +101,13 @@ public class PeopleDAO {
             String url = resultSet.getString("URL");
             String title = resultSet.getString("Title");
             String description = resultSet.getString("Descript");
-       
-            Videos video = new Videos(url, title, description);
+            Date   date = resultSet.getDate("upload_date");
+            String tags = resultSet.getString("Tags");
+            int comedianID = resultSet.getInt("Comedian_ID");
+            String comment = resultSet.getString("comment");
+            String userID = resultSet.getString("UserID");
+           
+            Videos video = new Videos(url, title, description, tags, comment, comedianID, comment, userID);
             listVideos.add(video);
         }        
         resultSet.close();

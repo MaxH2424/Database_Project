@@ -48,6 +48,7 @@
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
 </style>
+
 <meta charset="ISO-8859-1">
 <title>Search Comedian/Tag</title>
 </head>
@@ -66,7 +67,7 @@
         <button>></button>
     </center>
     
-     
+     </form>
     <div align="center">
         <table border="1" cellpadding="5">
             <caption><h2>Leave a Comment!</h2></caption>
@@ -86,6 +87,7 @@
 	  						<button class="dropbtn">Comment</button>
 	  						<div class="dropdown-content">
 		  						<select id="selection">
+		  							<option value=""></option>
 		        					<option value="excellent">Excellent</option>
 		        					<option value="good">Good</option>
 		        					<option value="fair">Fair</option>
@@ -104,7 +106,7 @@
         </table>
     </div>
     </form>
-</form>
+
   
 </body>
 		

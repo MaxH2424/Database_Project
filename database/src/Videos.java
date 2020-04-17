@@ -6,6 +6,8 @@ public class Videos {
 	protected String title = "NA";
 	protected String description = "NA";
 	protected String tags ="NA";
+	protected String comment; // Comments on videos
+	protected String username; // Username who posted the comment
 	protected java.sql.Date postDate;
 	
 	public Videos(int id){
@@ -44,6 +46,17 @@ public class Videos {
 		this.title = title;
 		this.description = description;
 		this.tags = tags;
+	}
+	
+	public Videos(String url, String title, String description, String tags, String comment, String username, java.sql.Date postDate) {
+		this.url = url;
+		this.title = title;
+		this.description = description;
+		this.tags = tags;
+		this.comment = comment;
+		this.username = username;
+		this.postDate = postDate;
+		
 	}
 
 	public int getId() {
