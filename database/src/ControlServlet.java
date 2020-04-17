@@ -90,6 +90,9 @@ public class ControlServlet extends HttpServlet {
             case "/listCom":
             	listVids(request,response);
             	break;
+            case "/insertComment":
+            	insertComment(request, response);
+            	break;
             default:          	            	          	
                 break;
             }
@@ -265,6 +268,21 @@ public class ControlServlet extends HttpServlet {
          // The sendRedirect() method works at client side and sends a new request
         
     }
+	
+	private void insertComment(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+		PeopleDAO comID = new PeopleDAO();
+		String rating = request.getParameter("selection");
+		String comment = request.getParameter("comment");		
+		String url = request.getParameter("td1");
+		int id = comID.getComedianIDFromVideo(url);
+		
+		Comments newComment = new Comments(rating, comment, id, url);
+		comID.insertCommentQuery(newComment);
+		
+		RequestDispatcher rd = request.getRequestDispatcher("Comment.jsp");
+		rd.forward(request, response);
+	}
     
     private void goToVideoPg(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {

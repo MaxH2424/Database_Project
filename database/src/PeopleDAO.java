@@ -101,13 +101,13 @@ public class PeopleDAO {
             String url = resultSet.getString("URL");
             String title = resultSet.getString("Title");
             String description = resultSet.getString("Descript");
-            Date   date = resultSet.getDate("upload_date");
+            java.sql.Date date = resultSet.getDate("upload_date");
             String tags = resultSet.getString("Tags");
             int comedianID = resultSet.getInt("Comedian_ID");
             String comment = resultSet.getString("comment");
             String userID = resultSet.getString("UserID");
            
-            Videos video = new Videos(url, title, description, tags, comment, comedianID, comment, userID);
+            Videos video = new Videos(url, title, description, tags, comment, userID, date);
             listVideos.add(video);
         }        
         resultSet.close();
@@ -176,6 +176,29 @@ public class PeopleDAO {
 //        disconnect();
         return rowInserted; 
     }  
+    
+    public boolean insertCommentQuery(Comments comment)throws SQLException{
+    	connect_func();
+    	PrintStream out = System.out; // For debugging purposes
+    	String sql = "insert into Review(Score, Remark, URL_Review, User_FK) values (?,?,?,?)";
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+    	preparedStatement.setString(1, comment.rating);
+		preparedStatement.setString(2, comment.comment);
+		preparedStatement.setString(3, comment.url);
+		preparedStatement.setInt(4, comment.comedianID);
+		
+		out.println("Start of Comment Info");
+		out.println(comment.rating);
+		out.println(comment.comment);
+		out.println(comment.url);
+		out.println(comment.comedianID);
+		
+		boolean rowInserted = preparedStatement.executeUpdate() > 0;
+        preparedStatement.close();
+//        disconnect();
+        return rowInserted; 
+    	
+    }
     
     public boolean checkUser(Users user) throws SQLException{
     	connect_func();
@@ -707,6 +730,27 @@ public class PeopleDAO {
         return id;
         
 		}
+	
+	public int getComedianIDFromVideo(String url)
+    		throws SQLException, IOException, ServletException{
+    	int id = 0;
+    	connect_func();
+    	PrintStream out = System.out;
+    	String returnSQL = "SELECT Comedian_ID FROM videos WHERE URL = ?"; 
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(returnSQL);
+        preparedStatement.setString(1, url);
+               
+        ResultSet resultSet = preparedStatement.executeQuery();
+        
+    	if(resultSet.next()) {
+    		id = resultSet.getInt("ID");
+    		out.println("the ID WE FOUND WAS: " + id);
+    	}
+    	resultSet.close();
+        
+        return id;        
+		}
+	
 	
     public List<Videos> findComVids(String com) throws SQLException{
     	PrintStream out = System.out;
