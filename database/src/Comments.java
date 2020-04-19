@@ -1,4 +1,3 @@
-
 public class Comments {
 	protected String rating;
 	protected String comment;

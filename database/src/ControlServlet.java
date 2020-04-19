@@ -28,7 +28,8 @@ import java.sql.PreparedStatement;
 public class ControlServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private PeopleDAO peopleDAO;
- 
+    private String currUser;
+    
     public void init() {
         peopleDAO = new PeopleDAO(); 
     }
@@ -93,6 +94,19 @@ public class ControlServlet extends HttpServlet {
             case "/insertComment":
             	insertComment(request, response);
             	break;
+            case "/favorites":
+            	listFavorites(request, response);
+            case "/deleteFav":
+            	deleteFavorite(request, response);
+            	break;
+            case "/add":
+            	break;
+            case "/signOut":
+            	System.out.println(currUser + " Has signed out successfully");
+            	currUser = "";
+            	goToLoginScreen(request, response);
+            	break;
+            	
             default:          	            	          	
                 break;
             }
@@ -141,6 +155,21 @@ public class ControlServlet extends HttpServlet {
     	dispatcher.forward(request, response);
     }
     
+    private void listFavorites(HttpServletRequest request, HttpServletResponse response)
+    		throws SQLException, IOException, ServletException{
+    	PrintStream out = System.out;
+    	List<Comedians> favoritesList = peopleDAO.findFavorites(currUser);
+    	out.println("Printng of UTD");
+    	for(int i = 0; i < favoritesList.size(); i++) { // Output of urls
+    		out.println(favoritesList.get(i).getfName() + " " + favoritesList.get(i).getlName());
+    	}
+    	out.println("End of UTD");
+    	out.println("-------------");
+    	request.setAttribute("FavoritesList", favoritesList);
+    	RequestDispatcher dispatcher = request.getRequestDispatcher("FavoritesList.jsp");
+    	dispatcher.forward(request, response);
+    }
+    
     private void comedianTagScreen(HttpServletRequest request, HttpServletResponse response)
     		throws SQLException, IOException, ServletException{
     	RequestDispatcher rd = request.getRequestDispatcher("SearchComedian_Tag.jsp");
@@ -157,6 +186,8 @@ public class ControlServlet extends HttpServlet {
         out.println(password);
         
         if (checker) {
+        	currUser=username;
+        	out.println(currUser + "has logged in successfully");
         	List<Users> listUsers = peopleDAO.listAllPeople();
             request.setAttribute("listUsers", listUsers);
             RequestDispatcher dispatcher = request.getRequestDispatcher("SearchInterface.jsp");       
@@ -314,5 +345,7 @@ public class ControlServlet extends HttpServlet {
         peopleDAO.delete(email);
         response.sendRedirect("brand"); 
     }
+    
+    
 
 }

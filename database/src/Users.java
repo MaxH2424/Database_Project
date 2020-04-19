@@ -1,5 +1,13 @@
 
 public class Users {
+	public int getFavorite() {
+		return favorite;
+	}
+
+	public void setFavorite(int favorite) {
+		this.favorite = favorite;
+	}
+
 	protected int id = 0;
 	protected String username = "NA";
 	protected String password = "NA";

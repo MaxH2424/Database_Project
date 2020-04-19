@@ -27,5 +27,10 @@
 		<br><button style ="height:20px;width:140px">Leave a Comment!</button>
 	</center>
 </form>
+<form action="favorites" method="post" name="match">
+	<center>
+		<br><button style ="height:20px;width:140px">Favorites</button>
+	</center>
+</form>
 </body>
 </html>

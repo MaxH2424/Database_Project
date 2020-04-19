@@ -275,15 +275,6 @@ public class PeopleDAO {
     	preparedStatement = (PreparedStatement) connect.prepareStatement(sql4);
     	resultSet = preparedStatement.executeUpdate();
     	
-    	String sql5 = "CREATE TABLE Favorite_Comedians(\r\n" + 
-    			"	email varchar(90),\r\n" + 
-    			"	comedianID INTEGER,\r\n" + 
-    			"    PRIMARY KEY(comedianID)\r\n" + 
-    			");";
-    	
-    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql5);
-    	resultSet = preparedStatement.executeUpdate();
-    	
     	String sql6 = "CREATE TABLE Videos(\r\n" + 
     			"	Descript varchar(200),\r\n" + 
     			"	upload_date Date,\r\n" + 
@@ -306,12 +297,22 @@ public class PeopleDAO {
     			"	Last_name varchar(30),\r\n" + 
     			"	Pass varchar(30),\r\n" + 
     			"	Favorites INTEGER,\r\n" + 
-    			"	PRIMARY KEY (Username),\r\n" + 
-    			"	FOREIGN KEY (Favorites) References Favorite_Comedians(comedianID)\r\n" + 
-    			"	\r\n" + 
+    			"	PRIMARY KEY (Username)\r\n" +
     			");";
     	
     	preparedStatement = (PreparedStatement) connect.prepareStatement(sql7);
+    	resultSet = preparedStatement.executeUpdate();
+    	
+    	String sql5 = "CREATE TABLE Favorite_Comedians(\r\n" + 
+    			"	id mediumint NOT NULL AUTO_INCREMENT,\r\n" +
+    			"	email varchar(90),\r\n" +
+    			"	comedianID INTEGER,\r\n" + 
+    			"    FOREIGN KEY(comedianID) REFERENCES Comedian(ID),\r\n" +
+    			"    FOREIGN KEY(email) REFERENCES Users(Username),\r\n" +
+    			"	 PRIMARY KEY(id)\r\n" +
+    			");";
+    	
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql5);
     	resultSet = preparedStatement.executeUpdate();
     	
     	String sql8 = "CREATE TABLE Review(\r\n" + 
@@ -578,7 +579,7 @@ public class PeopleDAO {
     	resultSet = preparedStatement.executeUpdate();
     	
     	String sql50 = "INSERT INTO Favorite_Comedians (email, comedianID)\r\n" + 
-    			"VALUES ('Craig@gmail.com', 1);";
+    			"VALUES ('ballzack69', 1);";
     	
     	preparedStatement = (PreparedStatement) connect.prepareStatement(sql50);
     	resultSet = preparedStatement.executeUpdate();
@@ -590,7 +591,7 @@ public class PeopleDAO {
     	resultSet = preparedStatement.executeUpdate();
     	
     	String sql52 = "INSERT INTO Favorite_Comedians (email, comedianID)\r\n" + 
-    			"VALUES ('Tim@gmail.com', 3);";
+    			"VALUES ('ballzack69', 3);";
     	
     	preparedStatement = (PreparedStatement) connect.prepareStatement(sql52);
     	resultSet = preparedStatement.executeUpdate();
@@ -602,7 +603,7 @@ public class PeopleDAO {
     	resultSet = preparedStatement.executeUpdate();
     	
     	String sql54 = "INSERT INTO Favorite_Comedians (email, comedianID)\r\n" + 
-    			"VALUES ('Lang@gmail.com', 5);";
+    			"VALUES ('ballzack69', 5);";
     	
     	preparedStatement = (PreparedStatement) connect.prepareStatement(sql54);
     	resultSet = preparedStatement.executeUpdate();
@@ -614,7 +615,7 @@ public class PeopleDAO {
     	resultSet = preparedStatement.executeUpdate();
     	
     	String sql56 = "INSERT INTO Favorite_Comedians (email, comedianID)\r\n" + 
-    			"VALUES ('Rick@gmail.com', 7);\r\n";
+    			"VALUES ('ballzack69', 7);\r\n";
     	
     	preparedStatement = (PreparedStatement) connect.prepareStatement(sql56);
     	resultSet = preparedStatement.executeUpdate();
@@ -626,7 +627,7 @@ public class PeopleDAO {
     	resultSet = preparedStatement.executeUpdate();
     	
     	String sql58 = "INSERT INTO Favorite_Comedians (email, comedianID)\r\n" + 
-    			"VALUES ('Max@gmail.com', 9);";
+    			"VALUES ('ballzack69', 9);";
     	
     	preparedStatement = (PreparedStatement) connect.prepareStatement(sql58);
     	resultSet = preparedStatement.executeUpdate();
@@ -661,6 +662,8 @@ public class PeopleDAO {
 //        disconnect();
         return rowDeleted;     
     }
+    
+    public boolean dealetList(String fName, String lName)
      
     public boolean update(Users user, String refUser) throws SQLException {
         String sql = "UPDATE users SET Username = ?,First_name = ?,Last_name = ?,Age =? WHERE Username = ?";
@@ -782,5 +785,34 @@ public class PeopleDAO {
         out.println("WE MADE IT");
         resultSet.close();
         return listVideos;
+    }
+    
+    public List<Comedians> findFavorites(String User) throws SQLException{
+    	PrintStream out = System.out;
+    	List<Comedians> listComedians = new ArrayList<Comedians>();
+    	String sql = "SELECT\r\n" +
+    				  "email, First_Name, Last_Name, comedianID\r\n" +
+    				  "FROM\r\n" +   
+    				  "project.Favorite_Comedians\r\n" +
+    				  "INNER JOIN project.Comedian ON\r\n" +
+    				  "Favorite_Comedians.ComedianID=Comedian.id\r\n" +
+    				  "WHERE\r\n" +
+    				  "email = ?\r\n";
+    	
+    	connect_func();
+    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        preparedStatement.setString(1, User);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while(resultSet.next()) {
+        	String fName = resultSet.getString("First_Name");
+        	String lName = resultSet.getString("Last_Name");
+        	int comid = resultSet.getInt("comedianID");
+        	out.println(fName + " " + lName);
+        	Comedians comedian = new Comedians(fName, lName, comid);
+        	listComedians.add(comedian);
+        }
+    	
+    
+    	 return listComedians;
     }
 }
