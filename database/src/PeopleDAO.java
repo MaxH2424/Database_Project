@@ -90,31 +90,7 @@ public class PeopleDAO {
         return listPeople;
     }
     
-    public List<Videos> listAllVideos() throws SQLException {
-        List<Videos> listVideos = new ArrayList<Videos>();        
-        String sql = "SELECT * FROM videos";      
-        connect_func();      
-        statement =  (Statement) connect.createStatement();
-        ResultSet resultSet = statement.executeQuery(sql);
-         
-        while (resultSet.next()) {
-            String url = resultSet.getString("URL");
-            String title = resultSet.getString("Title");
-            String description = resultSet.getString("Descript");
-            java.sql.Date date = resultSet.getDate("upload_date");
-            String tags = resultSet.getString("Tags");
-            int comedianID = resultSet.getInt("Comedian_ID");
-            String comment = resultSet.getString("comment");
-            String userID = resultSet.getString("UserID");
-           
-            Videos video = new Videos(url, title, description, tags, comment, userID, date);
-            listVideos.add(video);
-        }        
-        resultSet.close();
-        statement.close();         
-        disconnect();        
-        return listVideos;
-    }
+   
     
     protected void disconnect() throws SQLException {
         if (connect != null && !connect.isClosed()) {
@@ -149,33 +125,7 @@ public class PeopleDAO {
         return rowInserted;
     }     
     
-    public boolean insertVideoQuery (Videos video) throws SQLException {
-    	connect_func();
-    	PrintStream out = System.out;
-		String sql = "insert into Videos(Descript, upload_date, title, tags, URL, comedian_id) values (?, ?, ?, ?, ?, ?)";
-		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-		preparedStatement.setString(1, video.description);
-		preparedStatement.setDate(2, video.postDate);
-		preparedStatement.setString(3, video.title);
-		preparedStatement.setString(4, video.tags);
-		preparedStatement.setString(5, video.url);
-		preparedStatement.setInt(6, video.id);
-		
-		out.println("Start of Video Info");
-		out.println(video.url);
-		out.println(video.postDate);
-		out.println(video.description);
-		out.println(video.title);
-		out.println(video.tags);
-		out.println(video.id);
-		
-//		preparedStatement.executeUpdate();
-		
-        boolean rowInserted = preparedStatement.executeUpdate() > 0;
-        preparedStatement.close();
-//        disconnect();
-        return rowInserted; 
-    }  
+ 
     
     public boolean insertCommentQuery(Comments comment)throws SQLException{
     	connect_func();
@@ -215,20 +165,7 @@ public class PeopleDAO {
     	}
     }
     
-    public boolean checkVideo(Videos video) throws SQLException{
-    	connect_func();
-    	String sql= "SELECT * FROM videos WHERE url = ?";
-    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-    	preparedStatement.setString(1, video.url);
-    	ResultSet resultSet = preparedStatement.executeQuery();
-    	
-    	if (resultSet.next()) {
-    		return true; 		
-    	}
-    	else {
-    		return false;
-    	} 
-    }
+
     
     public boolean checkLogin(String user, String pass) throws SQLException{
     	connect_func();
@@ -755,37 +692,7 @@ public class PeopleDAO {
 		}
 	
 	
-    public List<Videos> findComVids(String com) throws SQLException{
-    	PrintStream out = System.out;
-    	List<Videos> listVideos = new ArrayList<Videos>();
-    	String sql = "SELECT videos.*, comedian.* FROM videos, comedian WHERE comedian_id = ID AND First_name = ? AND Last_name =?";
-    	
-    	String tokens[] = com.split(" ");
-    	if(tokens.length != 2) {throw new IllegalArgumentException();}
-    	String first = tokens[0];
-    	String last = tokens[1];
-    			
-    	connect_func();
-    	preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
-        preparedStatement.setString(1, first);
-        preparedStatement.setString(2, last);
-        ResultSet resultSet = preparedStatement.executeQuery(); 
-        
-        int i = 0;
-        while(i < 2) {
-        	resultSet.next();
-            String URL = resultSet.getString("URL");
-            out.println(URL);
-            Videos video = new Videos(URL);
-            listVideos.add(video);            
-            out.println(i);
-            i++;           
-        }
-        
-        out.println("WE MADE IT");
-        resultSet.close();
-        return listVideos;
-    }
+
     
     public List<Comedians> findFavorites(String User) throws SQLException{
     	PrintStream out = System.out;
