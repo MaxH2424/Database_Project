@@ -170,14 +170,13 @@ public class PeopleDAO {
     public boolean insertVideoQuery (Videos video) throws SQLException {
     	connect_func();
     	PrintStream out = System.out;
-		String sql = "insert into Videos(Descript, upload_date, title, tags, URL, comedian_id) values (?, ?, ?, ?, ?, ?)";
+		String sql = "insert into Videos(Descript, upload_date, title, tags, URL, comedian_id) values (?, CURDATE(), ?, ?, ?, ?)";
 		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
 		preparedStatement.setString(1, video.description);
-		preparedStatement.setDate(2, video.postDate);
-		preparedStatement.setString(3, video.title);
-		preparedStatement.setString(4, video.tags);
-		preparedStatement.setString(5, video.url);
-		preparedStatement.setInt(6, video.id);
+		preparedStatement.setString(2, video.title);
+		preparedStatement.setString(3, video.tags);
+		preparedStatement.setString(4, video.url);
+		preparedStatement.setInt(5, video.id);
 		
 		out.println("Start of Video Info");
 		out.println(video.url);

@@ -307,7 +307,8 @@ public class ControlServlet extends HttpServlet {
         }
         else {
             peopleDAO.insertVideoQuery(newVideo);
-        	listBrandNew(request, response);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("SearchInterface.jsp");
+        	dispatcher.forward(request, response);
         }
          // The sendRedirect() method works at client side and sends a new request
         
