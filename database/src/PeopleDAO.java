@@ -813,12 +813,12 @@ public class PeopleDAO {
         ResultSet resultSet = preparedStatement.executeQuery(); 
         
         while(resultSet.next()) {
-        	resultSet.next();
             String URL = resultSet.getString("URL");
             out.println(URL);
             Videos video = new Videos(URL);
             listVideos.add(video);                     
         }
+        
         
         out.println("WE MADE IT");
         resultSet.close();
