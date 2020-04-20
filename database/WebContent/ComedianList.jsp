@@ -24,22 +24,22 @@ if(request.getParameter("listPeople") == null) { // we want to make sure that we
 
 
     <center>
-        <h1>Favorites List</h1>
+        <h1>List of Comedians</h1>
         <h2>
             
             <a href="signOut">Sign out</a>
             &nbsp;&nbsp;&nbsp;
-            <a href="listComedians">Add to favorites</a>
+            <a href="searchInterface">Back to Menu</a>
              
         </h2>
     </center>
     <div align="center">
         <table border="1" cellpadding="5">
-            <c:forEach var="Comedians" items="${FavoritesList}">
+            <c:forEach var="Comedians" items="${listComedians}">
                 <tr>
                       <td><c:out value="${Comedians.fName}" /></td>                   
 	                  <td><c:out value="${Comedians.lName}" /></td>
-                      <td><a href="deleteFav?id=<c:out value='${Comedians.id}' />">Delete</a></td> 
+                      <td><a href="insertFavorite?id=<c:out value='${Comedians.id}' />">add to favorites</a></td> 
                 </tr>
             </c:forEach>
         </table>

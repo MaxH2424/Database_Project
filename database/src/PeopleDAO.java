@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -116,6 +117,26 @@ public class PeopleDAO {
         return listVideos;
     }
     
+    public List<Comedians> listAllComedians() throws SQLException {
+        List<Comedians> listComedians = new ArrayList<Comedians>();        
+        String sql = "SELECT First_name, Last_name, ID FROM Comedian";      
+        connect_func();      
+        statement =  (Statement) connect.createStatement();
+        ResultSet resultSet = statement.executeQuery(sql);
+         
+        while (resultSet.next()) {
+            String first_name = resultSet.getString("First_name");
+            String last_name = resultSet.getString("Last_name");
+            int id = resultSet.getInt("ID");
+            Comedians comedian = new Comedians(first_name, last_name, id);
+            listComedians.add(comedian);
+        }        
+        resultSet.close();
+        statement.close();         
+        disconnect();        
+        return listComedians;
+    }
+    
     protected void disconnect() throws SQLException {
         if (connect != null && !connect.isClosed()) {
         	connect.close();
@@ -176,6 +197,16 @@ public class PeopleDAO {
 //        disconnect();
         return rowInserted; 
     }  
+    
+    public void insertFavoriteQuery (int id, String login) throws SQLException {
+    	connect_func();
+    	String sql = "insert into Favorite_Comedians(comedianID, email) values (?, ?)";
+		preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+		preparedStatement.setInt(1, id);
+		preparedStatement.setString(2, login);
+		preparedStatement.executeUpdate();
+        preparedStatement.close();
+    } 
     
     public boolean insertCommentQuery(Comments comment)throws SQLException{
     	connect_func();
@@ -663,8 +694,22 @@ public class PeopleDAO {
         return rowDeleted;     
     }
     
-    public boolean dealetList(String fName, String lName)
-     
+    public boolean deleteFavorite(int id) throws SQLException {
+    	PrintStream out = System.out;
+        String sql = "DELETE FROM project.Favorite_Comedians WHERE id = ?";        
+        connect_func();
+        
+        out.println(id);
+        preparedStatement = (PreparedStatement) connect.prepareStatement(sql);
+        preparedStatement.setInt(1, id);
+        
+        boolean rowDeleted = preparedStatement.executeUpdate() > 0;
+        out.println(rowDeleted);
+        preparedStatement.close();
+//        disconnect();
+        return rowDeleted;
+    }     
+  
     public boolean update(Users user, String refUser) throws SQLException {
         String sql = "UPDATE users SET Username = ?,First_name = ?,Last_name = ?,Age =? WHERE Username = ?";
         connect_func();
@@ -771,15 +816,12 @@ public class PeopleDAO {
         preparedStatement.setString(2, last);
         ResultSet resultSet = preparedStatement.executeQuery(); 
         
-        int i = 0;
-        while(i < 2) {
+        while(resultSet.next()) {
         	resultSet.next();
             String URL = resultSet.getString("URL");
             out.println(URL);
             Videos video = new Videos(URL);
-            listVideos.add(video);            
-            out.println(i);
-            i++;           
+            listVideos.add(video);                     
         }
         
         out.println("WE MADE IT");

@@ -20,10 +20,10 @@
         </select>
         &nbsp;
         <input type="text" id="userSearch" name="searchBar">&nbsp;
-        <button>></button>
+        <button>Search</button>
     </center>
-    
-
+</form>   
+      
     <div align="center">
         <table border="1" cellpadding="5">
             <caption><h2>List of Videos</h2></caption>
@@ -39,7 +39,7 @@
         </table>
     </div>
 
-      </form> 
+
 </body>
 		
 </html>

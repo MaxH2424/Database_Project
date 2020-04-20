@@ -54,12 +54,18 @@ public class ControlServlet extends HttpServlet {
             case "/insertVideo":
             	insertVideo(request, response);
             	break;
+            case "/insertFavorite":
+            	insertFavorite(request, response);
+            	break;
             case "/goToVideoPg":
             	goToVideoPg(request, response);
             	break;
             case "/delete":
             	deletePeople(request, response);
                 break;
+            case "/deleteFav":
+            	deleteFavorite(request, response);
+            	break;
             case "/login":
             	goToLoginScreen(request, response);
             	break;
@@ -96,17 +102,13 @@ public class ControlServlet extends HttpServlet {
             	break;
             case "/favorites":
             	listFavorites(request, response);
-            case "/deleteFav":
-            	deleteFavorite(request, response);
-            	break;
-            case "/add":
-            	break;
             case "/signOut":
             	System.out.println(currUser + " Has signed out successfully");
             	currUser = "";
             	goToLoginScreen(request, response);
             	break;
-            	
+            case "/listComedians":
+            	listComedians(request, response);
             default:          	            	          	
                 break;
             }
@@ -167,6 +169,14 @@ public class ControlServlet extends HttpServlet {
     	out.println("-------------");
     	request.setAttribute("FavoritesList", favoritesList);
     	RequestDispatcher dispatcher = request.getRequestDispatcher("FavoritesList.jsp");
+    	dispatcher.forward(request, response);
+    }
+    
+    private void listComedians(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException{
+    	List<Comedians> listComedians = peopleDAO.listAllComedians();
+    	request.setAttribute("listComedians", listComedians);
+    	RequestDispatcher dispatcher = request.getRequestDispatcher("ComedianList.jsp");
     	dispatcher.forward(request, response);
     }
     
@@ -243,7 +253,6 @@ public class ControlServlet extends HttpServlet {
         
         int favorite = Integer.parseInt(favorites);
 		
-        
         Users newUser = new Users(username, age, first_name, last_name, password, gender,favorite);
         
         boolean checker = peopleDAO.checkUser(newUser);
@@ -314,6 +323,25 @@ public class ControlServlet extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher("Comment.jsp");
 		rd.forward(request, response);
 	}
+	
+	private void insertFavorite(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+    	PrintStream out = System.out;
+        String login = currUser;
+        int comId = Integer.parseInt(request.getParameter("id"));
+        String URI = request.getRequestURI();
+		
+        try {
+        	peopleDAO.insertFavoriteQuery(comId, login); 
+        }
+        catch(SQLException s){
+        	out.println(comId + " is already in " + login + "'s favorite's list");
+        	response.sendRedirect(request.getHeader("referer"));
+        	return;
+        }
+        out.println(comId + " was succesfully added to " + login + "'s favorite's list");
+    	response.sendRedirect(request.getHeader("referer"));
+    }
     
     private void goToVideoPg(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
@@ -346,6 +374,11 @@ public class ControlServlet extends HttpServlet {
         response.sendRedirect("brand"); 
     }
     
-    
-
+    private void deleteFavorite(HttpServletRequest request, HttpServletResponse response)
+    		throws SQLException, IOException {
+    	String idStr = request.getParameter("id");
+    	int id = Integer.parseInt(idStr);
+    	peopleDAO.deleteFavorite(id);
+    	response.sendRedirect("favorites");
+    }
 }

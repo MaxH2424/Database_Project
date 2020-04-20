@@ -1,14 +1,14 @@
 
 public class Comedians {
-	protected int comid = 0;
+	protected int id = 0;
 	protected String fName = "";
 	protected String lName = "";
 	
 	Comedians(){};
-	Comedians(String fName, String lName, int comid){
+	Comedians(String fName, String lName, int id){
 		this.fName = fName;
 		this.lName = lName;
-		this.comid = comid;
+		this.id = id;
 	}
 	
 	Comedians(String fName){
@@ -27,10 +27,10 @@ public class Comedians {
 	public void setlName(String lName) {
 		this.lName = lName;
 	}
-	public int getcomid() {
-		return comid;
+	public int getid() {
+		return id;
 	}
-	public void setcomid(int comid) {
-		this.comid=comid;
+	public void setid(int comid) {
+		this.id=comid;
 	}
 }
