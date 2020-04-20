@@ -82,6 +82,8 @@ public class ControlServlet extends HttpServlet {
             case "/searchInterface":
             	searchInterface(request, response);
             	break;
+            case "/userSearchInterface":
+            	userSearchInterface(request, response);
             case "/list":
             	listBrandNew(request, response);
             	break;
@@ -106,6 +108,7 @@ public class ControlServlet extends HttpServlet {
             	break;
             case "/favorites":
             	listFavorites(request, response);
+            	break;
             case "/signOut":
             	System.out.println(currUser + " Has signed out successfully");
             	currUser = "";
@@ -113,6 +116,7 @@ public class ControlServlet extends HttpServlet {
             	break;
             case "/listComedians":
             	listComedians(request, response);
+            	break;
             default:          	            	          	
                 break;
             }
@@ -164,6 +168,7 @@ public class ControlServlet extends HttpServlet {
     private void listFavorites(HttpServletRequest request, HttpServletResponse response)
     		throws SQLException, IOException, ServletException{
     	PrintStream out = System.out;
+    	out.println(currUser);
     	List<Comedians> favoritesList = peopleDAO.findFavorites(currUser);
     	out.println("Printng of UTD");
     	for(int i = 0; i < favoritesList.size(); i++) { // Output of urls
@@ -217,6 +222,12 @@ public class ControlServlet extends HttpServlet {
         }
         	
         
+    }
+    
+    private void userSearchInterface(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+    	 RequestDispatcher dispatcher = request.getRequestDispatcher("SearchInterface.jsp");       
+         dispatcher.forward(request, response);
     }
  
     // to insert a people

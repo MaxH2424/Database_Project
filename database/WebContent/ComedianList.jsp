@@ -29,7 +29,7 @@ if(request.getParameter("listPeople") == null) { // we want to make sure that we
             
             <a href="signOut">Sign out</a>
             &nbsp;&nbsp;&nbsp;
-            <a href="searchInterface">Back to Menu</a>
+            <a href="userSearchInterface">Back to Menu</a>
              
         </h2>
     </center>
