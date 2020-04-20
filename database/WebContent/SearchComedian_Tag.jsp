@@ -9,7 +9,7 @@
 <title>Search Comedian/Tag</title>
 </head>
 <body>  
-<form action="searchInterface" method="post" name="match" id="searchSubmit">   
+<form action="listCom" method="post" name="match" id="searchSubmit">   
 
     <center>
         <h1>Search a Comedian or Tags</h1>
