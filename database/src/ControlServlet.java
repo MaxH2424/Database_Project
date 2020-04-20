@@ -286,7 +286,7 @@ public class ControlServlet extends HttpServlet {
 	@SuppressWarnings("deprecation")
 	private void insertVideo(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-    	
+    	PrintStream out = System.out;
         String video = request.getParameter("url");
         String title = request.getParameter("title");
         String description = request.getParameter("description");
@@ -310,13 +310,15 @@ public class ControlServlet extends HttpServlet {
     	java.sql.Date postDate = new java.sql.Date(year, month, day);
     	
         
-        Videos newVideo = new Videos(video, postDate, title, description, tags, id);
+        Videos newVideo = new Videos(description, postDate, title, tags, video,id);
         boolean checker = peopleDAO.checkVideo(newVideo);
         if (checker) {
-        	RequestDispatcher rd = request.getRequestDispatcher("InsertPeopleForm.jsp");
+        	out.println("Video was not inserted.");
+        	RequestDispatcher rd = request.getRequestDispatcher("SearchInterface.jsp");
         	rd.forward(request, response);
         }
         else {
+        	out.println("Video was inserted.");
             peopleDAO.insertVideoQuery(newVideo);
             RequestDispatcher dispatcher = request.getRequestDispatcher("SearchInterface.jsp");
         	dispatcher.forward(request, response);
