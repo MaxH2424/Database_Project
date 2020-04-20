@@ -29,6 +29,7 @@ public class ControlServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private PeopleDAO peopleDAO;
     private String currUser;
+    private Comments newComment = new Comments();
     
     public void init() {
         peopleDAO = new PeopleDAO(); 
@@ -93,6 +94,9 @@ public class ControlServlet extends HttpServlet {
             	break;
             case "/comment":
             	listUTD(request, response);
+            	break;
+            case "/CommentSectionSubmit":
+            	commentSection(request, response);
             	break;
             case "/listCom":
             	listVids(request,response);
@@ -311,17 +315,33 @@ public class ControlServlet extends HttpServlet {
 	
 	private void insertComment(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
+		String url = request.getParameter("url");		
+		
+		newComment.setUrl(url);
+				
+		RequestDispatcher rd = request.getRequestDispatcher("CommentSection.jsp");
+		rd.forward(request, response);
+	}
+	
+	private void commentSection(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException{
+		PrintStream out = System.out;
+		try {
 		PeopleDAO comID = new PeopleDAO();
 		String rating = request.getParameter("selection");
-		String comment = request.getParameter("comment");		
-		String url = request.getParameter("td1");
-		int id = comID.getComedianIDFromVideo(url);
+		String comment = request.getParameter("comment");	
+		String url = newComment.getUrl();
 		
-		Comments newComment = new Comments(rating, comment, id, url);
+		Comments newComment = new Comments(rating, comment, currUser, url);
 		comID.insertCommentQuery(newComment);
 		
-		RequestDispatcher rd = request.getRequestDispatcher("Comment.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/comment");
 		rd.forward(request, response);
+		}
+		catch(Exception e) {
+			RequestDispatcher rd = request.getRequestDispatcher("Comment.jsp");
+			rd.forward(request, response);
+		}
 	}
 	
 	private void insertFavorite(HttpServletRequest request, HttpServletResponse response)

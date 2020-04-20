@@ -52,20 +52,7 @@
 <meta charset="ISO-8859-1">
 <title>Search Comedian/Tag</title>
 </head>
-<body>  
-<form action="searchInterface" method="post" name="match" id="searchSubmit">   
-
-    <center>
-        <h1>Comment Center</h1>
-        <br>
-        <select id="selection">
-        	<option value="comedian">Comedian</option>
-        	<option value="tags">Tags</option>
-        </select>
-        &nbsp;
-        <input type="text" id="userSearch" name="searchBar">&nbsp;
-        <button>></button>
-    </center>
+<body>   
     
      </form>
     <div align="center">
@@ -79,27 +66,11 @@
             </tr>
             <c:forEach var="listUTD" items="${listUTD}">
                 <tr>
-                    <td name="td1"><c:out value="${listUTD.url}"/></td>
-                    <td name="td2"><c:out value="${listUTD.title}"/></td>
-                    <td name="td3"><c:out value="${listUTD.description}"/></td>
+                    <td><c:out value="${listUTD.url}"/></td>
+                    <td><c:out value="${listUTD.title}"/></td>
+                    <td><c:out value="${listUTD.description}"/></td>
                     <td>
-	                    <div class="dropdown">
-	  						<button class="dropbtn">Comment</button>
-	  						<div class="dropdown-content">
-		  						<select id="selection" name="selection">
-		  							<option value=""></option>
-		        					<option value="excellent">Excellent</option>
-		        					<option value="good">Good</option>
-		        					<option value="fair">Fair</option>
-		        					<option value="poor">Poor</option>
-	       						</select>
-	  							<center>Comment!</center>
-	    						<textarea rows="10" cols="20" name="comment"></textarea>
-	    						<form action="insertComment" method="post" name="match">
-	    						<button>Submit</button>
-	    						</form>
-		  					</div>
-						</div>  
+	    						<a href="insertComment?url=${listUTD.url}">Submit</a>
                     </td>
 				
                 </tr>

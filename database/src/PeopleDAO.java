@@ -104,11 +104,8 @@ public class PeopleDAO {
             String description = resultSet.getString("Descript");
             java.sql.Date date = resultSet.getDate("upload_date");
             String tags = resultSet.getString("Tags");
-            int comedianID = resultSet.getInt("Comedian_ID");
-            String comment = resultSet.getString("comment");
-            String userID = resultSet.getString("UserID");
-           
-            Videos video = new Videos(url, title, description, tags, comment, userID, date);
+            int comedianID = resultSet.getInt("Comedian_ID");          
+            Videos video = new Videos(description, date, title, tags, url, comedianID);
             listVideos.add(video);
         }        
         resultSet.close();
@@ -216,13 +213,13 @@ public class PeopleDAO {
     	preparedStatement.setString(1, comment.rating);
 		preparedStatement.setString(2, comment.comment);
 		preparedStatement.setString(3, comment.url);
-		preparedStatement.setInt(4, comment.comedianID);
+		preparedStatement.setString(4, comment.username);
 		
 		out.println("Start of Comment Info");
 		out.println(comment.rating);
 		out.println(comment.comment);
 		out.println(comment.url);
-		out.println(comment.comedianID);
+		out.println(comment.username);
 		
 		boolean rowInserted = preparedStatement.executeUpdate() > 0;
         preparedStatement.close();

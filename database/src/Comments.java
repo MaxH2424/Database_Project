@@ -1,13 +1,17 @@
 public class Comments {
 	protected String rating;
 	protected String comment;
-	protected int comedianID;
+	protected String username;
 	protected String url;
 	
-	Comments(String rating, String comment, int comedianID, String url){
+	Comments(){
+		
+	}
+	
+	Comments(String rating, String comment, String username, String url){
 		this.rating = rating;
 		this.comment = comment;
-		this.comedianID = comedianID;
+		this.username = username;
 		this.url = url;
 	}
 	
@@ -22,8 +26,8 @@ public class Comments {
 		
 	}
 	
-	public int getComedianID() {
-		return this.comedianID;
+	public String getUsername() {
+		return this.username;
 		
 	}
 	
@@ -41,8 +45,8 @@ public class Comments {
 		this.comment = comment;
 	}
 	
-	public void setUserEmail(int id) {
-		this.comedianID = id;
+	public void setUserEmail(String username) {
+		this.username = username;
 	}
 	
 	public void setUrl(String url) {
